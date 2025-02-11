@@ -1,0 +1,40 @@
+---
+title: 'MUSA5000 Assignment 1: Using OLS Regression to Predict Median House Values
+  in Philadelphia'
+author: "Zhanchao Yang"
+date: "`r Sys.Date()`"
+output: 
+  html_document:
+    theme: united
+    highlight: tango
+    toc: true
+    toc_float: true
+    code_folding: hide
+    code_download: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(sf)
+library(tidycensus)
+```
+
+```{r, warning=FALSE, message=FALSE, include= FALSE}
+# Load the data
+regression <- read.csv("data/RegressionData.csv")
+shape <- st_read("data/RegressionData.shp")
+```
+
+# Introduction
+
+
+
+# Method
+
+# Results
+
+# Discussion
+
+# References
