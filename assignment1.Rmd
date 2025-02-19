@@ -71,7 +71,7 @@ State that you’re using R for your data analysis.
 # Results
 ## Exploratory Results  
 
-###summary statistics of variables
+### summary statistics of variables
 i.	Present and briefly talk about the table with summary statistics which includes the dependent variable and the predictors (i.e., mean, standard deviation).
 ```{r}
 #summary statistics of variables
@@ -142,25 +142,58 @@ data <- data %>%
     LNPCTVACANT = log(1+PCTVACANT),
     LNPCTSINGLES = log(1+PCTSINGLES)
   )
-
-# histograms of the original variables
-p1 <- ggplot(data, aes(x = MEDHVAL)) + geom_histogram(bins = 30, fill = "blue", alpha = 0.7) + ggtitle("Median House Value")
-p2 <- ggplot(data, aes(x = PCTBACHMOR)) + geom_histogram(bins = 30, fill = "blue", alpha = 0.7) + ggtitle("% with Bachelor’s Degree")
-p3 <- ggplot(data, aes(x = NBELPOV100)) + geom_histogram(bins = 30, fill = "blue", alpha = 0.7) + ggtitle("# Households in Poverty")
-p4 <- ggplot(data, aes(x = PCTVACANT)) + geom_histogram(bins = 30, fill = "blue", alpha = 0.7) + ggtitle("% Vacant Houses")
-p5 <- ggplot(data, aes(x = PCTSINGLES)) + geom_histogram(bins = 30, fill = "blue", alpha = 0.7) + ggtitle("% Single House Units")
-
-# histograms of the transformed variables
-p6 <- ggplot(data, aes(x = LNMEDHVAL)) + geom_histogram(bins = 30, fill = "red", alpha = 0.7) + ggtitle("Log Median House Value")
-p7 <- ggplot(data, aes(x = LNPCTBACHMOR)) + geom_histogram(bins = 30, fill = "red", alpha = 0.7) + ggtitle("Log % with Bachelor’s Degree")
-p8 <- ggplot(data, aes(x = LNNBELPOV100)) + geom_histogram(bins = 30, fill = "red", alpha = 0.7) + ggtitle("Log # Households in Poverty")
-p9 <- ggplot(data, aes(x = LNPCTVACANT)) + geom_histogram(bins = 30, fill = "red", alpha = 0.7) + ggtitle("Log % Vacant Houses")
-p10 <- ggplot(data, aes(x = LNPCTSINGLES)) + geom_histogram(bins = 30, fill = "red", alpha = 0.7) + ggtitle("Log % Single House Units")
-
-# plot
-grid.arrange(p1, p6, p2, p7, p3, p8, p4, p9, p5, p10, ncol = 2)
-
 ```
+
+```{r, fig.height=7, fig.width=9, warning=FALSE, message=FALSE}
+longer_version<- data %>%
+  pivot_longer(cols = c("MEDHVAL", "PCTBACHMOR", "NBELPOV100", "PCTVACANT", "PCTSINGLES"),
+               names_to = "Variable",
+               values_to = "Value")
+
+ggplot(longer_version,aes(x = Value)) +
+  geom_histogram(aes(y = ..count..), fill = "blue", alpha = 0.7) +  
+  facet_wrap(~Variable, scales = "free", ncol = 3, labeller = as_labeller(c(
+    "MEDHVAL" = "Median House Value",
+    "PCTBACHMOR" = "% with Bachelor’s Degrees or Higher",
+    "NBELPOV100" = "# Households Living in Poverty",
+    "PCTVACANT" = "% of Vacant Houses",
+    "PCTSINGLES" = "% of Single House Units"
+  ))) +  
+  labs(x = "Value", y = "Count", title = "Histograms of Dependent and Predictor Variables") +
+  theme_light() +   
+  theme(plot.subtitle = element_text(size = 9,face = "italic"),
+        plot.title = element_text(size = 12, face = "bold"), 
+        axis.text.x=element_text(size=6),
+        axis.text.y=element_text(size=6), 
+        axis.title=element_text(size=8))
+```
+
+
+```{r, fig.height=7, fig.width=9, warning=FALSE, message=FALSE}
+# histograms of the transformed variables
+longer_version2 <- data %>%
+  pivot_longer(cols = c(LNMEDHVAL, LNPCTBACHMOR ,LNNBELPOV100,LNPCTVACANT, LNPCTSINGLES),
+               names_to = "Variable",
+               values_to = "Value")
+
+ggplot(longer_version2,aes(x = Value)) +
+  geom_histogram(aes(y = ..count..), fill = "red", alpha = 0.7) +  
+  facet_wrap(~Variable, scales = "free", ncol = 3, labeller = as_labeller(c(
+    "LNMEDHVAL" = "Log Median House Value",
+    "LNPCTBACHMOR" = "Log % with Bachelor’s Degree",
+    "LNNBELPOV100" = "Log # Households in Poverty",
+    "LNPCTVACANT" = "Log % Vacant Houses",
+    "LNPCTSINGLES" = "Log % Single House Units"
+  ))) +  
+  labs(x = "Value", y = "Count", title = "Histograms of Dependent and log transformed Predictor Variables") +
+  theme_light() +   
+  theme(plot.subtitle = element_text(size = 9,face = "italic"),
+        plot.title = element_text(size = 12, face = "bold"), 
+        axis.text.x=element_text(size=6),
+        axis.text.y=element_text(size=6), 
+        axis.title=element_text(size=8))
+```
+
 
 ### plot vaiables
 
