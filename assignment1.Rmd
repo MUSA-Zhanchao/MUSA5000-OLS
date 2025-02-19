@@ -19,21 +19,228 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(sf)
 library(tidycensus)
+library(knitr) 
+library(gt) 
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(gridExtra)
+library(ggcorrplot)
 ```
 
 ```{r, warning=FALSE, message=FALSE, include= FALSE}
 # Load the data
-regression <- read.csv("data/RegressionData.csv")
+data <- read.csv("data/RegressionData.csv")
 shape <- st_read("data/RegressionData.shp")
 ```
 
 # Introduction
-
-
+a)	State the problem and the setting of the analysis (i.e., Philadelphia).
+b)	Present either a brief review of the literature (use Google Scholar) or simply speculate as to why the predictors we’re using might be related with the response variable.
 
 # Method
 
+## Data Clean
+i.	Simply state that the original dataset had 1816 observations (i.e., block groups) and was cleaned in order to achieve a dataset with 1720 observations (that is, basically include the information about data cleaning that is on the very the first page of this assignment).
+
+## Expolratory Data Analysis
+i.	State that you will examine the summary statistics and distributions of variables.
+ii.	Also state that as part of your exploratory data analysis, you will examine the correlations between the predictors.  
+Explain what a correlation is, and provide the formula for the sample correlation coefficient r. Also mention the possible range of r values, and what correlation of 0 means.
+
+## Multiple Regression Analysis	
+	Describe the method of regression in several sentences. I.e., what is it used for, what does it do?
+	State the equation for y for this problem. The equation should be in the form:
+y=β_0+β_1 x_1+⋯+β_k x_k+ε. 
+However, in your report, instead of y and x1…xk, fill in the actual variable names (as in the regression example given above). Be sure to mention what βi’s and ε are as well. If the variables are log transformed, be sure to indicate that in the formulas.
+	State and explain regression assumptions (e.g., linearity; independence of observations; normality of residuals; homoscedasticity; no multicollinearity).
+	Mention the parameters that need to be estimated in multiple regression (σ2, β0 ,…, βk). State what σ2 is (you should have already talked about βi in (ii) above). 
+	Talk about the way of estimating the parameters. (Hint: present the equation on the slide ‘β Coefficient Estimation – Least Squares’ for multiple regression and briefly discuss what the equation does).
+	Talk about the coefficient of multiple determination R2, and the adjusted R2. Present and explain the relevant formulas and all the terms that are used in the formulas.
+	State the hypotheses you test. Specifically, talk about the F-ratio and the H0 and Ha associated with it, as well as the hypotheses you test about each of the individual βi’s (again, state H0 and Ha).
+
+## Additional Analyses
+i.	Talk about stepwise regression – discuss what it does and its limitations
+ii.	Talk about k-fold cross-validation (mentioning that k = 5) – discuss what it is used for, describe how it is operationalized and mention that the RMSE is used to compare models (explain what the RMSE is and how it is calculated, presenting and describing any relevant formulas).
+
+## Software
+State that you’re using R for your data analysis.
+
+
+
 # Results
+## Exploratory Results  
+
+###summary statistics of variables
+i.	Present and briefly talk about the table with summary statistics which includes the dependent variable and the predictors (i.e., mean, standard deviation).
+```{r}
+#summary statistics of variables
+
+dependent_var <- "MEDHVAL"
+
+predictors <- c("PCTBACHMOR", "NBELPOV100", "PCTVACANT", "PCTSINGLES")
+
+summary_stats <- data %>%
+  select(all_of(c(dependent_var, predictors))) %>%
+  summarise_all(list(Mean = mean, SD = sd), na.rm = TRUE) %>%
+  pivot_longer(cols = everything(), names_to = "Variable", values_to = "Value") %>%
+  separate(Variable, into = c("Variable", "Stat"), sep = "_") %>%
+  pivot_wider(names_from = Stat, values_from = Value)
+
+```
+
+```{r}
+#output the table
+
+summary_stats$Variable <- recode(summary_stats$Variable,
+  "MEDHVAL" = "Median House Value",
+  "NBELPOV100" = "# Households Living in Poverty",
+  "PCTBACHMOR" = "% of Individuals with Bachelor’s Degrees or Higher",
+  "PCTVACANT" = "% of Vacant Houses",
+  "PCTSINGLES" = "% of Single House Units"
+)
+
+summary_stats %>%
+  gt() %>%
+  tab_header(title = "Summary Statistics") %>%
+  fmt_number(columns = c("Mean", "SD"), decimals = 2) %>%
+  tab_spanner(label = "Statistics", columns = c("Mean", "SD")) %>%
+  cols_label(Variable = "Variable", Mean = "Mean", SD = "SD") %>%
+  tab_row_group(
+    label = "Predictors",
+    rows = Variable != "Median House Value"
+  ) %>%
+  tab_row_group(
+    label = "Dependent Variable",
+    rows = Variable == "Median House Value"
+  ) %>%
+  cols_align(align = "right", columns = everything())
+
+```
+
+###summary distributions of variables
+ii.	Also state whether the variables are normal before and after the logarithmic transformation
+1.	Present the histograms of the original variables alongside the histograms of the log-transformed variables, and clearly state whether you’re using the log-transformed or original variable in your regression. 
+2.	State that the other regression assumptions will be examined in a separate section below (Regression Assumption Checks).
+
+```{r}
+#check 0
+columns_to_check <- c(dependent_var, predictors)
+
+zero_counts <- sapply(data[columns_to_check], function(x) sum(x == 0, na.rm = TRUE))
+
+zero_counts[zero_counts > 0]
+
+```
+
+```{r}
+data <- data %>%
+  mutate(
+    LNMEDHVAL = log(MEDHVAL),
+    LNPCTBACHMOR = log(1+PCTBACHMOR),
+    LNNBELPOV100 = log(1+NBELPOV100),
+    LNPCTVACANT = log(1+PCTVACANT),
+    LNPCTSINGLES = log(1+PCTSINGLES)
+  )
+
+# histograms of the original variables
+p1 <- ggplot(data, aes(x = MEDHVAL)) + geom_histogram(bins = 30, fill = "blue", alpha = 0.7) + ggtitle("Median House Value")
+p2 <- ggplot(data, aes(x = PCTBACHMOR)) + geom_histogram(bins = 30, fill = "blue", alpha = 0.7) + ggtitle("% with Bachelor’s Degree")
+p3 <- ggplot(data, aes(x = NBELPOV100)) + geom_histogram(bins = 30, fill = "blue", alpha = 0.7) + ggtitle("# Households in Poverty")
+p4 <- ggplot(data, aes(x = PCTVACANT)) + geom_histogram(bins = 30, fill = "blue", alpha = 0.7) + ggtitle("% Vacant Houses")
+p5 <- ggplot(data, aes(x = PCTSINGLES)) + geom_histogram(bins = 30, fill = "blue", alpha = 0.7) + ggtitle("% Single House Units")
+
+# histograms of the transformed variables
+p6 <- ggplot(data, aes(x = LNMEDHVAL)) + geom_histogram(bins = 30, fill = "red", alpha = 0.7) + ggtitle("Log Median House Value")
+p7 <- ggplot(data, aes(x = LNPCTBACHMOR)) + geom_histogram(bins = 30, fill = "red", alpha = 0.7) + ggtitle("Log % with Bachelor’s Degree")
+p8 <- ggplot(data, aes(x = LNNBELPOV100)) + geom_histogram(bins = 30, fill = "red", alpha = 0.7) + ggtitle("Log # Households in Poverty")
+p9 <- ggplot(data, aes(x = LNPCTVACANT)) + geom_histogram(bins = 30, fill = "red", alpha = 0.7) + ggtitle("Log % Vacant Houses")
+p10 <- ggplot(data, aes(x = LNPCTSINGLES)) + geom_histogram(bins = 30, fill = "red", alpha = 0.7) + ggtitle("Log % Single House Units")
+
+# plot
+grid.arrange(p1, p6, p2, p7, p3, p8, p4, p9, p5, p10, ncol = 2)
+
+```
+
+### plot vaiables
+
+iii.	Present the choropleth maps of the dependent variable and the predictors.
+1.	Refer to the maps in the text, and talk about the following: 
+a.	Which maps look similar? Which maps look different? That is, which predictors do you expect to be strongly associated with the dependent variable based on the visualization? Also, given your examination of the maps, are there any predictors that you think will be strongly inter-correlated? That is, do you expect severe multicollinearity to be an issue here? Discuss this in a paragraph. 
+
+```{r}
+plot_map <- function(var, title) {
+  ggplot(shape) +
+    geom_sf(aes(fill = .data[[var]]), color = "white", size = 0.1) +
+    scale_fill_viridis_c(option = "C", name = title) +
+    labs(title = title) +
+    theme_minimal()
+}
+
+map1 <- plot_map("PCTVACANT", "% Vacant Houses")
+map2 <- plot_map("PCTSINGLES", "% Single House Units")
+map3 <- plot_map("PCTBACHMOR", "% with Bachelor's Degree")
+map4 <- plot_map("LNNBELPOV", "Log Households in Poverty")
+
+library(patchwork)
+(map1 | map2) / (map3 | map4) 
+```
+### correlations
+iv.	Present the correlation matrix of the predictors which you obtained from R. 
+1.	Talk about whether the correlation matrix shows that there is severe multicollinearity.
+2.	Does the correlation matrix support your conclusions based on your visual comparison of predictor maps?
+
+```{r}
+#linear relationship
+p1 <- ggplot(data, aes(x = PCTBACHMOR, y = MEDHVAL)) + 
+  geom_point(alpha = 0.5, color = "blue") + 
+  geom_smooth(method = "lm", se = FALSE, color = "red") +  
+  ggtitle("% with Bachelor’s Degree vs. Median House Value") +
+  theme_minimal()
+
+p2 <- ggplot(data, aes(x = NBELPOV100, y = MEDHVAL)) + 
+  geom_point(alpha = 0.5, color = "blue") + 
+  geom_smooth(method = "lm", se = FALSE, color = "red") +  
+  ggtitle("# Households in Poverty vs. Median House Value") +
+  theme_minimal()
+
+p3 <- ggplot(data, aes(x = PCTVACANT, y = MEDHVAL)) + 
+  geom_point(alpha = 0.5, color = "blue") + 
+  geom_smooth(method = "lm", se = FALSE, color = "red") +  
+  ggtitle("% Vacant Houses vs. Median House Value") +
+  theme_minimal()
+
+p4 <- ggplot(data, aes(x = PCTSINGLES, y = MEDHVAL)) + 
+  geom_point(alpha = 0.5, color = "blue") + 
+  geom_smooth(method = "lm", se = FALSE, color = "red") +  
+  ggtitle("% Single House Units vs. Median House Value") +
+  theme_minimal()
+
+grid.arrange(p1, p2, p3, p4, ncol = 2)
+```
+
+
+```{r}
+#Pearson correlations of predictors
+predictor_vars <- data[, c("PCTVACANT", "PCTSINGLES", "PCTBACHMOR", "LNNBELPOV100")]
+
+cor_matrix <- cor(predictor_vars, use = "complete.obs", method = "pearson")
+
+print(cor_matrix)
+
+ggcorrplot(cor_matrix, 
+           method = "square",   
+           type = "lower",      
+           lab = TRUE,       
+           lab_size = 4,      
+           colors = c("#d73027", "white", "#1a9850"), 
+           title = "Correlation Matrix",
+           ggtheme = theme_minimal())
+
+```
+
+
+## Regression Assumption Checks
 
 # Discussion
 
