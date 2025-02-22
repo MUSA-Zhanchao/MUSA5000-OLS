@@ -26,6 +26,7 @@ library(dplyr)
 library(tidyr)
 library(gridExtra)
 library(ggcorrplot)
+library(patchwork)
 ```
 
 ```{r, warning=FALSE, message=FALSE, include= FALSE}
@@ -114,7 +115,7 @@ summary_stats %>%
     label = "Dependent Variable",
     rows = Variable == "Median House Value"
   ) %>%
-  cols_align(align = "right", columns = everything())
+  cols_align(align = "left", columns = everything())
 
 ```
 
@@ -201,23 +202,73 @@ iii.	Present the choropleth maps of the dependent variable and the predictors.
 1.	Refer to the maps in the text, and talk about the following: 
 a.	Which maps look similar? Which maps look different? That is, which predictors do you expect to be strongly associated with the dependent variable based on the visualization? Also, given your examination of the maps, are there any predictors that you think will be strongly inter-correlated? That is, do you expect severe multicollinearity to be an issue here? Discuss this in a paragraph. 
 
-```{r}
-plot_map <- function(var, title) {
-  ggplot(shape) +
-    geom_sf(aes(fill = .data[[var]]), color = "white", size = 0.1) +
-    scale_fill_viridis_c(option = "C", name = title) +
-    labs(title = title) +
-    theme_minimal()
-}
-
-map1 <- plot_map("PCTVACANT", "% Vacant Houses")
-map2 <- plot_map("PCTSINGLES", "% Single House Units")
-map3 <- plot_map("PCTBACHMOR", "% with Bachelor's Degree")
-map4 <- plot_map("LNNBELPOV", "Log Households in Poverty")
-
-library(patchwork)
-(map1 | map2) / (map3 | map4) 
+```{r,fig.height=7, fig.width=9,warning=FALSE, message=FALSE}
+ggplot(shape) +
+  geom_sf(aes(fill = LNMEDHVAL), color = "transparent") +
+  scale_fill_gradientn(colors = c("#fff0f3", "#a4133c"), 
+                       name = "LNMEDHVAL", 
+                       na.value = "transparent") + 
+  theme(legend.text = element_text(size = 9),
+        legend.title = element_text(size = 10),
+        axis.text.x = element_blank(),
+        axis.ticks.x = element_blank(),
+        axis.text.y = element_blank(),
+        axis.ticks.y = element_blank(),
+        plot.subtitle = element_text(size = 9, face = "italic"),
+        plot.title = element_text(size = 12, face = "bold"),
+        panel.background = element_blank(),
+        panel.border = element_rect(colour = "grey", fill = NA, size = 0.8)) +
+  labs(title = "Log Transformed Median House Value")
 ```
+
+
+```{r, fig.height=7, fig.width=9, warning=FALSE, message=FALSE}
+shpe_longer<- shape %>%
+  pivot_longer(cols = c("PCTVACANT", "PCTSINGLES", "PCTBACHMOR", "LNNBELPOV"),
+               names_to = "Variable",
+               values_to = "Value")
+custom_titles <- c(
+  PCTVACANT   = "Percent of Vacant Houses",
+  PCTSINGLES  = "Percent of Single House Units",
+  PCTBACHMOR  = "Percent of Bachelor's Degree or Higher",
+  LNNBELPOV   = "Logged Transformed Poverty Rate"
+)
+
+plot_list <- lapply(unique(shpe_longer$Variable), function(var_name) {
+  data_subset <- subset(shpe_longer, Variable == var_name)
+  
+  ggplot(data_subset) +
+    geom_sf(aes(fill = Value), color = "transparent") +
+    scale_fill_gradientn(
+      colors = c("#fff0f3", "#a4133c"),
+      name = var_name,
+      na.value = "transparent"
+    ) +
+    labs(title = custom_titles[[var_name]]) +
+    theme(
+      legend.text = element_text(size = 6),
+      legend.title = element_text(size = 6),
+      legend.key.size = unit(0.3, "cm"),
+      axis.text.x = element_blank(),
+      axis.ticks.x = element_blank(),
+      axis.text.y = element_blank(),
+      axis.ticks.y = element_blank(),
+      plot.subtitle = element_text(size = 9, face = "italic"),
+      plot.title = element_text(size = 12, face = "bold"),
+      panel.background = element_blank(),
+      panel.border = element_rect(colour = "grey", fill = NA, size = 0.8)
+    )
+})
+
+# Combine the plots into a grid (2 columns by 2 rows)
+combined_plot <- (plot_list[[1]] + plot_list[[2]]) /
+                 (plot_list[[3]] + plot_list[[4]])
+
+combined_plot
+```
+
+
+
 ### correlations
 iv.	Present the correlation matrix of the predictors which you obtained from R. 
 1.	Talk about whether the correlation matrix shows that there is severe multicollinearity.
