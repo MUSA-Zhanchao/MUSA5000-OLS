@@ -1,7 +1,6 @@
 ---
-title: 'MUSA5000 Assignment 1: Using OLS Regression to Predict Median House Values
-  in Philadelphia'
-author: "Zhanchao Yang"
+title: 'Using OLS Regression to Predict Median House Values in Philadelphia'
+author: "Zhanchao Yang, Haoyu Zhu, Kavana Raju"
 date: "`r Sys.Date()`"
 output: 
   html_document:
@@ -222,7 +221,7 @@ ggplot(shape) +
 ```
 
 
-```{r, fig.height=7, fig.width=9, warning=FALSE, message=FALSE}
+```{r, fig.height=12, fig.width=15, warning=FALSE, message=FALSE}
 shpe_longer<- shape %>%
   pivot_longer(cols = c("PCTVACANT", "PCTSINGLES", "PCTBACHMOR", "LNNBELPOV"),
                names_to = "Variable",
@@ -233,6 +232,8 @@ custom_titles <- c(
   PCTBACHMOR  = "Percent of Bachelor's Degree or Higher",
   LNNBELPOV   = "Logged Transformed Poverty Rate"
 )
+
+
 
 plot_list <- lapply(unique(shpe_longer$Variable), function(var_name) {
   data_subset <- subset(shpe_longer, Variable == var_name)
@@ -246,15 +247,15 @@ plot_list <- lapply(unique(shpe_longer$Variable), function(var_name) {
     ) +
     labs(title = custom_titles[[var_name]]) +
     theme(
-      legend.text = element_text(size = 6),
-      legend.title = element_text(size = 6),
+      legend.text = element_text(size = 8),
+      legend.title = element_text(size = 10),
       legend.key.size = unit(0.3, "cm"),
       axis.text.x = element_blank(),
       axis.ticks.x = element_blank(),
       axis.text.y = element_blank(),
       axis.ticks.y = element_blank(),
       plot.subtitle = element_text(size = 9, face = "italic"),
-      plot.title = element_text(size = 12, face = "bold"),
+      plot.title = element_text(size = 15, face = "bold"),
       panel.background = element_blank(),
       panel.border = element_rect(colour = "grey", fill = NA, size = 0.8)
     )
