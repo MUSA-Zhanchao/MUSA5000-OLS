@@ -251,10 +251,38 @@ data <- data %>%
     Fitted = fitted_values,
     Residuals = residuals_values,
     Standardized_Residuals = standardized_residuals)
-
 ```
 
+```{r}
+ggplot(data, aes(x = Fitted, y = Standardized_Residuals)) +
+  geom_point(color = "black") +    
+  geom_hline(yintercept = 0, linetype = "dashed", color = "red") +  
+  labs(
+    title = "Scatter Plot of Standardized Residuals vs Fitted Values",
+    x = "Predicted Values",
+    y = "Standardized Residuals"
+  ) +
+  theme_minimal() +   
+  theme(plot.subtitle = element_text(size = 9,face = "italic"),
+        plot.title = element_text(size = 12, face = "bold"), 
+        axis.text.x=element_text(size=6),
+        axis.text.y=element_text(size=6), 
+        axis.title=element_text(size=8))
+```
 
+```{r}
+ggplot(data, aes(x = Standardized_Residuals)) +
+  geom_histogram(bins = 30, fill = "black") +
+  labs(title = "Histogram of Standardized Residuals", 
+       x = "Standardized Residuals", 
+       y = "Frequency") +
+  theme_minimal() +   
+  theme(plot.subtitle = element_text(size = 9,face = "italic"),
+        plot.title = element_text(size = 12, face = "bold"), 
+        axis.text.x=element_text(size=6),
+        axis.text.y=element_text(size=6), 
+        axis.title=element_text(size=8))
+```
 
 
 
