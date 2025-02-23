@@ -37,6 +37,114 @@ data <- read.csv("data/RegressionData.csv")
 shape <- st_read("data/RegressionData.shp")
 ```
 
+# Introduction
+
+# Methods
+
+## Data Cleaning
+
+To predict median house values in Philadelphia, we obtained the original dataset from the United States Census data. The dataset represents census block groups from the year 2000 and initially contained 1,816 observations. The key variables included:
+
+(1) *POLY_ID* – Census Block Group ID
+(2) *MEDHVAL* – Median value of all owner-occupied housing units
+(3) *PCBACHMORE* – Proportion of residents in the block group with at least a bachelor’s degree
+(4) *PCTVACANT* – Proportion of housing units that are vacant
+(5) *PCTSINGLES* – Percentage of housing units that are detached single-family houses
+(6) *NBELPOV100* – Number of households with incomes below 100% of the poverty level
+(7) *MEDHHINC* – Median household income
+
+To refine the dataset for modeling purposes, we applied the following filtering criteria:
+
+(1)Retained block groups with a population greater than 40
+(2)Included only block groups that contained housing units
+(3)Excluded records where the median house value was below $10,000
+
+Additionally, we removed a specific block group in North Philadelphia that exhibited inconsistencies, with an unusually high median house value (over $800,000) despite a very low median household income (less than $8,000).
+
+After data cleaning, the final dataset contained 1,720 observations. 
+
+## Exploratory Data Anaylsis
+
+### Summary Statistics
+We will first examine the summary statistics of key variables in the dataset, including the dependent variables *MEDHVAL* (Median House Value), and predictors *NBELPOV100* (Households Living in Poverty), *PCTBACHMOR* (% of Individuals with Bachelor’s Degrees or Higher), *PCTVACANT*(% of Vacant Houses), *PCTSINGLES*( % of Single House Units). 
+
+We will examine the **mean** and **standard deviation (SD)** of key variables in the dataset.   
+
+The **mean** (\(\bar{X}\)) represents the average value of a variable and is calculated as:  
+
+$$
+\bar{X} = \frac{1}{n} \sum_{i=1}^{n} X_i
+$$  
+
+where:  
+- \(X_i\) represents each individual observation  
+- \(n\) is the total number of observations  
+
+The mean gives us a single representative value of the dataset, which helps in understanding the typical value for a given variable.  
+
+To measure variability, we use the **standard deviation (SD)**, which quantifies how much the values in a dataset deviate from the mean. The formula for the sample standard deviation (\(s\)) is:  
+
+$$
+s = \sqrt{\frac{1}{n-1} \sum_{i=1}^{n} (X_i - \bar{X})^2}
+$$  
+
+where:  
+- \(X_i\) represents each individual observation  
+- \(\bar{X}\) is the mean of the observations  
+- \(n\) is the total number of observations  
+
+A larger standard deviation indicates that the data points are more spread out, while a smaller standard deviation suggests that the data points are closer to the mean.  
+
+
+### Distributions 
+
+We will also examine the histograms and apply log transformations for key variables to assess whether the transformed variables follow a more normal-like distribution. 
+
+**Histograms** provide a visual representation of how a variable's values are distributed, helping to identify whether the data follows a **normal distribution**, is **right-skewed**, or **left-skewed**. Linear regression model assume that variables are approximately normally distributed.  
+
+- **X-axis:** The values of the variable (e.g., house prices, income levels).  
+- **Y-axis:** The frequency of observations within each bin.  
+
+If the histogram is **right-skewed**, it suggests that a small number of observations have significantly higher values compared to the rest. For variables following a **right-skewed distribution**, we will apply a **log transformation** to these variables to improve normality. Since the **log transformation** is undefined for zero or negative values, we must first check whether any variable contains zero.  
+- If **no zeros** are present, we apply the standard log transformation:  
+$$
+  X' = \log_{10} (X)
+$$  
+- If **zeros are present**, we adjust by adding 1 before taking the log:  
+$$
+  X' = \log_{10} (X + 1)
+$$  
+  This ensures that all values remain positive and avoids undefined values.  
+
+By comparing the **original histograms** with the **log-transformed histograms**, we will assess whether the transformation improves the suitability of the data for predictive modeling.
+
+
+### Correlations
+
+We will analyze **correlations** between predictors, to detect potential **multicollinearity** before proceeding with regression analysis, which can distort model interpretations.  
+
+Multicollinearity occurs when predictors are highly correlated, which can lead to unstable regression coefficients, making interpretation difficult. It also inflates standard errors, reducing the statistical significance of predictors, and increases the risk of overfitting, as redundant variables do not contribute new information to the model.  
+
+The **correlation coefficient** \(r\) is calculated as:  
+
+$$
+r = \frac{\sum (X_i - \bar{X}) (Y_i - \bar{Y})}{\sqrt{\sum (X_i - \bar{X})^2 \cdot \sum (Y_i - \bar{Y})^2}}
+$$
+
+where:  
+- \(X_i\) and \(Y_i\) are individual data points for variables \(X\) and \(Y\), respectively.  
+- \(\bar{X}\) and \(\bar{Y}\) are the **mean values** of \(X\) and \(Y\).  
+- The numerator represents the **covariance** between \(X\) and \(Y\), while the denominator **normalizes** the values.  
+
+The correlation coefficient \(r\) ranges from **-1 to 1**:  
+- \(r = 1\): Represents a perfect positive correlation, where an increase in 𝑋 corresponds to a increase in 𝑌.
+- \(r = -1\): Represents a perfect negative correlation, where an increase in 𝑋 corresponds to a decrease in 𝑌.  
+- \(r = 0\): No linear correlation, meaning changes in 𝑋 do not predict changes in 𝑌.  
+
+# Results
+
+## Exploratory Results 
+
 
 ```{r summary stats, warning=FALSE, message=FALSE}
 dependent_var <- "MEDHVAL"
@@ -239,10 +347,13 @@ combined_plot
 fit <- lm(LNMEDHVAL ~ PCTVACANT + PCTSINGLES + PCTBACHMOR + LNNBELPOV100, data=data)
 summary(fit)
 ```
+
 ```{r}
 anova_table <- anova(fit)
 anova_table
 ```
+
+
 ```{r}
 fitted_values <- fitted(fit)
 residuals_values <- residuals(fit)
@@ -383,6 +494,7 @@ ggcorrplot(cor_matrix,
 stepwise_model <-  stepAIC(fit, direction = "both")
 stepwise_model$anova
 ```
+
 ```{r cross validation, message=FALSE, warning = FALSE}
 
 lm <-  trainControl(method = "cv", number = 5)
