@@ -10,6 +10,7 @@ output:
     toc_float: true
     code_folding: hide
     code_download: yes
+    mathjax: default
 ---
 
 ```{r setup, include=FALSE}
@@ -98,8 +99,8 @@ The mean gives us a single representative value of the dataset, which helps in u
 To measure variability, we use the **standard deviation (SD)**, which quantifies how much the values in a dataset deviate from the mean. The formula for the sample standard deviation (\(s\)) is:  
 
 $$
-s = \sqrt{\frac{1}{n-1} \sum_{i=1}^{n} (X_i - \bar{X})^2}
-$$  
+s = \sqrt{\frac{1}{n-1} \sum_{i=1}^{n} \left( X_i - \bar{X} \right)^2}
+$$
 
 where:  
 - \(X_i\) represents each individual observation  
@@ -136,23 +137,37 @@ By comparing the **original histograms** with the **log-transformed histograms**
 
 We will analyze **correlations** between predictors, to detect potential **multicollinearity** before proceeding with regression analysis, which can distort model interpretations.  
 
-Multicollinearity occurs when predictors are highly correlated, which can lead to unstable regression coefficients, making interpretation difficult. It also inflates standard errors, reducing the statistical significance of predictors, and increases the risk of overfitting, as redundant variables do not contribute new information to the model.  
+Multicollinearity occurs when predictors are highly correlated, which can lead to unstable regression coefficients. It also inflates standard errors, reducing the statistical significance of predictors, and increases the risk of overfitting, as redundant variables do not contribute new information to the model.  
 
 The **correlation coefficient** \(r\) is calculated as:  
 
 $$
-r = \frac{\sum (X_i - \bar{X}) (Y_i - \bar{Y})}{\sqrt{\sum (X_i - \bar{X})^2 \cdot \sum (Y_i - \bar{Y})^2}}
+r = \frac{\sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum_{i=1}^{n} (x_i - \bar{x})^2 \sum_{i=1}^{n} (y_i - \bar{y})^2}}
 $$
+In a more concise way, this above formula is also equivalent to the following: 
 
+$$
+r = \frac{1}{n-1} \sum_{i=1}^{n} \left( \frac{x_i - \bar{x}}{S_x} \right) \left( \frac{y_i - \bar{y}}{S_y} \right)
+$$
 where:  
 - \(X_i\) and \(Y_i\) are individual data points for variables \(X\) and \(Y\), respectively.  
 - \(\bar{X}\) and \(\bar{Y}\) are the **mean values** of \(X\) and \(Y\).  
 - The numerator represents the **covariance** between \(X\) and \(Y\), while the denominator **normalizes** the values.  
 
-The correlation coefficient \(r\) ranges from **-1 to 1**:  
-- \(r = 1\): Represents a perfect positive correlation, where an increase in 𝑋 corresponds to a increase in 𝑌.
-- \(r = -1\): Represents a perfect negative correlation, where an increase in 𝑋 corresponds to a decrease in 𝑌.  
-- \(r = 0\): No linear correlation, meaning changes in 𝑋 do not predict changes in 𝑌.  
+The correlation coefficient \(r\) ranges from **-1 to 1**: A value of +1 indicates a perfect positive linear relationship, while a value of -1 indicates a perfect negative linear relationship. A value of 0 suggests no linear relationship between the variables, meaning changes in one do not influence the other.
+
+## Multiple Regression
+
+### Regression Assumptions
+
+### Parameter Estimations
+
+### Hypothesis Testing
+
+## Additional Analysis
+
+## Software and Packages
+
 
 # Results
 
