@@ -27,6 +27,8 @@ library(kableExtra)
 library(gridExtra)
 library(ggcorrplot)
 library(patchwork)
+library(MASS)
+library(caret)
 ```
 
 ```{r, warning=FALSE, message=FALSE, include= FALSE}
@@ -42,7 +44,7 @@ dependent_var <- "MEDHVAL"
 predictors <- c("PCTBACHMOR", "NBELPOV100", "PCTVACANT", "PCTSINGLES")
 
 summary_stats <- data %>%
-  select(all_of(c(dependent_var, predictors))) %>%
+  dplyr::select(all_of(c(dependent_var, predictors))) %>%
   summarise_all(list(Mean = mean, SD = sd), na.rm = TRUE) %>%
   pivot_longer(cols = everything(), names_to = "Variable", values_to = "Value") %>%
   separate(Variable, into = c("Variable", "Stat"), sep = "_") %>%
@@ -253,9 +255,11 @@ data <- data %>%
     Standardized_Residuals = standardized_residuals)
 ```
 
+
+
 ```{r}
 ggplot(data, aes(x = Fitted, y = Standardized_Residuals)) +
-  geom_point(color = "black") +    
+  geom_point(color = "black", size= 0.4) +    
   geom_hline(yintercept = 0, linetype = "dashed", color = "red") +  
   labs(
     title = "Scatter Plot of Standardized Residuals vs Fitted Values",
@@ -286,11 +290,6 @@ ggplot(data, aes(x = Standardized_Residuals)) +
 
 
 
-
-
-
-
-
 ```{r fig.height=7, fig.width=9, warning=FALSE, message=FALSE}
 longer<-data %>%
   pivot_longer(cols = c("PCTBACHMOR", "LNNBELPOV100", "PCTVACANT", "PCTSINGLES"),
@@ -298,7 +297,7 @@ longer<-data %>%
                values_to = "Value")
 
 ggplot(longer,aes(x = Value, y = LNMEDHVAL)) +
-  geom_point(color = "black") +
+  geom_point(color = "black", size= 0.4) +
   geom_smooth(method = "lm", color = "red", se = FALSE) + 
   facet_wrap(~ Variable, scales = "free", labeller = as_labeller(c(
     "PCTBACHMOR" = "% with Bachelor’s Degrees or Higher",
@@ -319,6 +318,31 @@ ggplot(longer,aes(x = Value, y = LNMEDHVAL)) +
 
 
 
+```{r, fig.height=7, fig.width=9, warning=FALSE, message=FALSE}
+join<- data %>%
+  dplyr::select(POLY_ID, Standardized_Residuals)
+
+shape <- shape %>%
+  left_join(join, by = c("POLY_ID" = "POLY_ID"))
+
+ggplot(shape)+
+  geom_sf(aes(fill = Standardized_Residuals), color = "transparent") +
+  scale_fill_gradientn(colors = c("#fff0f3", "#a4133c"), 
+                       name = "Std Residuals", 
+                       na.value = "transparent") +  # Choose a color palette, invert direction if needed
+  labs(title = "Choropleth Map of Standardized Residuals") +
+  theme(legend.text = element_text(size = 9),
+        legend.title = element_text(size = 10),
+        axis.text.x = element_blank(),
+        axis.ticks.x = element_blank(),
+        axis.text.y = element_blank(),
+        axis.ticks.y = element_blank(),
+        plot.subtitle = element_text(size = 9, face = "italic"),
+        plot.title = element_text(size = 12, face = "bold"),
+        panel.background = element_blank(),
+        panel.border = element_rect(colour = "grey", fill = NA, size = 0.8))
+
+```
 
 
 
@@ -334,6 +358,8 @@ custom_labels <- c(
 predictor_vars <- data[, c("PCTVACANT", "PCTSINGLES", "PCTBACHMOR", "LNNBELPOV100")]
 
 cor_matrix <- cor(predictor_vars, use = "complete.obs", method = "pearson")
+
+print(cor_matrix)
 rownames(cor_matrix) <- names(custom_labels)
 colnames(cor_matrix) <- names(custom_labels)
 
@@ -353,4 +379,24 @@ ggcorrplot(cor_matrix,
 ```
 
 
+```{r}
+stepwise_model <-  stepAIC(fit, direction = "both")
+stepwise_model$anova
+```
+```{r cross validation, message=FALSE, warning = FALSE}
 
+lm <-  trainControl(method = "cv", number = 5)
+
+cvlm_model <- train(LNMEDHVAL ~ PCTVACANT + PCTSINGLES + PCTBACHMOR + LNNBELPOV100, data=data, method = "lm", trControl = lm)
+
+print(cvlm_model)
+
+```
+
+
+```{r reduce cv model,message=FALSE, warning=FALSE}
+
+cvlm_model_reduced = train(LNMEDHVAL ~ PCTVACANT + MEDHHINC, data = data, method = "lm", trControl = lm)
+
+print(cvlm_model_reduced)
+```
