@@ -158,12 +158,51 @@ The correlation coefficient \(r\) ranges from **-1 to 1**: A value of +1 indicat
 
 ## Multiple Regression
 
+$$
+\text{LNMEDHVAL} = \beta_0 + \beta_1 \text{PCTVACANT} + \beta_2 \text{PCTSINGLES} + \beta_3 \text{PCTBACHMOR} + \beta_4 \text{LN(LNNBELPOV100)} + \epsilon
+$$
 ### Regression Assumptions
 
 ### Parameter Estimations
 
+$$
+\text{SSE} = \sum_{i=1}^{n} (y_i - \hat{y}_i)^2 = \sum_{i=1}^{n} (y_i - \hat{\beta}_0 - \hat{\beta}_1 x_{i1} - \dots - \hat{\beta}_k x_{ik})^2
+$$
+
+
+$$
+\sigma^2 = \frac{\text{SSE}}{n - (k+1)}
+$$
+
+$$
+SST = \sum_{i=1}^{n} (y_i - \bar{y})^2
+$$
+$$
+R^2 = 1 - \frac{SSE}{SST}
+$$
+
+$$
+R^2_{\text{adj}} = 1 - \frac{(1 - R^2)(n - 1)}{n - k - 1}
+$$
+
+
+
 ### Hypothesis Testing
 
+  $$
+  H_0: \beta_1 = \beta_2 = \beta_3 = \beta_4 = 0
+  $$
+  $$
+  H_a: \text{At least one } \beta_i \neq 0
+  $$
+
+  $$
+  H_{0i}: \beta_i = 0
+  $$
+  
+  $$
+  H_{ai}: \beta_i \neq 0
+  $$
 ## Additional Analysis
 
 ## Software and Packages
