@@ -59,13 +59,13 @@ In this study, we utilize ordinary least squares (OLS) regression to analyze the
 
 To predict median house values in Philadelphia, we obtained the original dataset from the United States Census data. The dataset represents census block groups from the year 2000 and initially contained 1,816 observations. The key variables included:
 
--  *POLY_ID* – Census Block Group ID
--  *MEDHVAL* – Median value of all owner-occupied housing units
--  *PCBACHMORE* – Proportion of residents in the block group with at least a bachelor’s degree
--  *PCTVACANT* – Proportion of housing units that are vacant
--  *PCTSINGLES* – Percentage of housing units that are detached single-family houses
--  *NBELPOV100* – Number of households with incomes below 100% of the poverty level
--  *MEDHHINC* – Median household income
+-  **POLY_ID** – Census Block Group ID
+-  **MEDHVAL** – Median value of all owner-occupied housing units
+-  **PCBACHMORE** – Proportion of residents in the block group with at least a bachelor’s degree
+-  **PCTVACANT** – Proportion of housing units that are vacant
+-  **PCTSINGLES** – Percentage of housing units that are detached single-family houses
+-  **NBELPOV100** – Number of households with incomes below 100% of the poverty level
+-  **MEDHHINC** – Median household income
 
 To refine the dataset for modeling purposes, we applied the following filtering criteria:
 
@@ -157,10 +157,17 @@ where:
 The correlation coefficient \(r\) ranges from **-1 to 1**: A value of +1 indicates a perfect positive linear relationship, while a value of -1 indicates a perfect negative linear relationship. A value of 0 suggests no linear relationship between the variables, meaning changes in one do not influence the other.
 
 ## Multiple Regression
+After getting a general sense of the data, we conduct multiple regression analysis to examine the relationship between the dependent variable, **Median House Value (MEDHVAL)**, and the predictors, **education attainment (PCTBACHMOR)**, **number of Households Living in Poverty (NBELPOV100)**, **percentage of Vacant Houses (PCTVACANT)**, and **percentage of Single House Units (PCTSINGLES)**. Regression analysis is a statistical method to examine the relationship between a dependent variable and one or more predictors. With this type of analysis, researchers can identify the strength and direction of the relationship between variables, make predictions, and assess the significance of predictors. The model also estimates coefficients for each predictor, which represent the expected change in the dependent variable for a one-unit change in the predictor, holding other predictors constant. For this study, the multiple regression model is formulated as follows:
+$$
+\text{LNMEDHVAL} = \beta_0 + \beta_1 \text{PCTVACANT} + \beta_2 \text{PCTSINGLES} + \beta_3 \text{PCTBACHMOR} + \beta_4 \text{log(NBELPOV100)} + \epsilon
+$$
+where **LNMEDHVAL** is the log-transformed median house value, **PCTVACANT** is the proportion of vacant housing units , **PCTSINGLES** is the proportion of the single family housing , **PCTBACHMOR** is the percentage of the residents holding bachelor's degree or higher, and **log(NBELPOV100)**  is the log-transformed number of households living below the poverty line.
 
-$$
-\text{LNMEDHVAL} = \beta_0 + \beta_1 \text{PCTVACANT} + \beta_2 \text{PCTSINGLES} + \beta_3 \text{PCTBACHMOR} + \beta_4 \text{LN(LNNBELPOV100)} + \epsilon
-$$
+\(\beta_0\) is the intercept, \(\beta_1\), \(\beta_2\), \(\beta_3\), and \(\beta_4\) are the coefficients for each predictor, and \(\epsilon\) is the error term. 
+
+
+The model aims to predict the log-transformed median house value based on the selected predictors. The log transformation helps to stabilize the variance and improve the linearity of the relationship between the dependent and independent variables.
+
 ### Regression Assumptions
 
 ### Parameter Estimations
