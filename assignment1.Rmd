@@ -207,6 +207,16 @@ $$
 
 ## Software and Packages
 
+In this analysis, we utilize the R programming language, a professional statistical software widely used for data analysis and visualization.The following libraries and packages have been employed to conduct the analysis:
+
+- `tidyverse`: A collection of R packages for data manipulation and visualization.
+- `sf`: A package for spatial data processing, especially for handling shapefiles.
+- `ggplot2`: A popular visualization package for creating high-quality map and charts, part of the `tidyverse` collection.
+- `ggcorrplot`: A package designated to  visualize correlation matrices using `ggplot2`.
+- `patchwork`: A package for combining multiple ggplot2 plots into a single plot.
+- `MASS`: A package provides multiple functions and datasets for statistical analysis, including linear models. 
+- `caret`: A package for creating predictive models and conducting machine learning tasks, used in cross-validation and k-fold analysis.
+- `kableExtra`: A package for creating tables with advanced formatting options.
 
 # Results
 
