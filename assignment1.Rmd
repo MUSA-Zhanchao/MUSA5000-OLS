@@ -183,29 +183,44 @@ Finally, **No Fewer than 10 Observations per Predictor** assumes that there are 
 
 ### Parameter Estimations
 
+After verifing the assumptions of the regression, we start the regression analysis. Several parameters need to estimate here: 
+- \( \beta_0 \), which is the intercept
+- \( \beta_1, \dots, \beta_k \), which are coefficients of each independent variables
+- \( \sigma^2 \), the variance of the error terms, which represents the variability in the dependent variable that is not explained by the predictors.
+
+The least squares method estimates the coefficients by minimizing **the sum of squared errors (SSE)**, which is the sum of the squared differences between the observed values and the predicted values. The formula for SSE is:
+
 $$
 \text{SSE} = \sum_{i=1}^{n} (y_i - \hat{y}_i)^2 = \sum_{i=1}^{n} (y_i - \hat{\beta}_0 - \hat{\beta}_1 x_{i1} - \dots - \hat{\beta}_k x_{ik})^2
 $$
+where \(y_i\) is the actual or observed value, \(\hat{y}_i\) is the predicted value, \(\hat{\beta}_0, \dots, \hat{\beta}_k\) are the estimated coefficients, and \(x_{i1}, \dots, x_{ik}\) are the predictor values for the \(i\)-th observation.
 
+With the Error Sum of Squares (SSE) calculated, we can estimate the variance of the error terms \(\sigma^2\) using the formula:
 
 $$
 \sigma^2 = \frac{\text{SSE}}{n - (k+1)}
 $$
+where \(n\) is the number of observations and \(k\) is the number of predictors in the model.
 
+### Model Evaluation
+
+We evaluated the model's fitness using the coefficient of determination \(R^2\) and the adjusted \(R^2\). The coefficient of determination \(R^2\) measures the proportion of variance in the dependent variable that is explained by the predictors. The adjusted \(R^2\) adjusts the \(R^2\) value based on the number of predictors, which help to provide a more accurate measure of model fit for multiple regression, as the increase the number of predictors can artificially inflate the \(R^2\) value.
+
+To obtain \(R^2\), \(SST\) or the total sum of squares, needed to be calculated first. The \(SST\) measures the total variance in the dependent variable, given by:
 $$
 SST = \sum_{i=1}^{n} (y_i - \bar{y})^2
 $$
+Where \(y_i\) is the observed value, and \(\bar{y}\) is the mean of the observed value. Then, the \(R^2\) can be obtained by:
 $$
 R^2 = 1 - \frac{SSE}{SST}
 $$
-
+After that, \(R^2\) is adjusted as follows based on the number of observations \(n\) and the number of predictors \(k\):
 $$
 R^2_{\text{adj}} = 1 - \frac{(1 - R^2)(n - 1)}{n - k - 1}
 $$
 
-
-
 ### Hypothesis Testing
+
 In this analysis. several hypothesis tests are conducted to determine the significance of the model and its predictors. The overall significance of the model is assessed using the F-ratio. It compares the variance explained by the model to the variance not explained by the model.A higher F-ratio indicates that the model explains a significant amount of variance in the dependent variable compared to the residual variance. 
 
 The null hypothesis and alternative hypothesis for the F-ratio are stated as follows:
