@@ -163,12 +163,23 @@ $$
 $$
 where **LNMEDHVAL** is the log-transformed median house value, **PCTVACANT** is the proportion of vacant housing units , **PCTSINGLES** is the proportion of the single family housing , **PCTBACHMOR** is the percentage of the residents holding bachelor's degree or higher, and **log(NBELPOV100)**  is the log-transformed number of households living below the poverty line.
 
-\(\beta_0\) is the intercept, \(\beta_1\), \(\beta_2\), \(\beta_3\), and \(\beta_4\) are the coefficients for each predictor, and \(\epsilon\) is the error term. 
-
-
-The model aims to predict the log-transformed median house value based on the selected predictors. The log transformation helps to stabilize the variance and improve the linearity of the relationship between the dependent and independent variables.
+\(\beta_0\) is the intercept, \(\beta_1\), \(\beta_2\), \(\beta_3\), and \(\beta_4\) are the coefficients for each predictor, and \(\epsilon\) is the error term. The coefficient \(\beta_1\), \(\beta_2\), \(\beta_3\), \(\beta_4\) represent the change in the log-transformed median house value for a one-unit change in the corresponding predictor, holding other predictors constant. The error term \(\epsilon\) accounts for the variability in the dependent variable that is not explained by the predictors.
 
 ### Regression Assumptions
+
+There are several assumptions associated with regression analysis that need to be met for the results to be valid. These assumptions including **linearity**, **independence of observations**, **homoscedasticity**, **normality of residuals**, **no multicollinearity**, and **no fewer than 10 observations per predictors**.
+
+First, **Linearity** assumes that the relationship between the dependent variable and the predictors is linear. To verify this assumption, we made scatter plots of the dependent variable against each predictor. If the relationship appears to be linear, the assumptions was met.
+
+Second, **Independence of Observations** assumes that the observations are independent of each other. There should be no spatial or temporal or other forms of dependence in the data. 
+
+Third, **Homoscedasticity** assumes that the variance of the residuals \(\epsilon\) is constant regardless of the values of each level of the predictors. To check this assumption, we made a scatter plot of the standardized residuals against the predicted values. If the residuals are evenly spread around zero, the assumption was met. Any patterns may indicate the presence of heteroscedasticity.
+
+Fourth, **Normality of Residuals** assumes that the residuals are normally distributed. We examined the histogram of the standardized residuals to check if they are approximately normally distributed. If the histogram is bell-shaped, the assumption was met.
+
+Fifth, **No Multicollinearity** assumes that the predictors are not highly correlated with each other. We calculated the correlation matrix of the predictors to check for multicollinearity. If the correlation coefficients are is not greater than 0.8 or less than -0.8, the assumption was met.
+
+Finally, **No Fewer than 10 Observations per Predictor** assumes that there are at least 10 observations for each predictor in the model. Since there are over 1,700 observations in the dataset, this assumption was met.
 
 ### Parameter Estimations
 
