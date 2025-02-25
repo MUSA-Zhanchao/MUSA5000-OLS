@@ -206,21 +206,34 @@ $$
 
 
 ### Hypothesis Testing
+In this analysis. several hypothesis tests are conducted to determine the significance of the model and its predictors. The overall significance of the model is assessed using the F-ratio. It compares the variance explained by the model to the variance not explained by the model.A higher F-ratio indicates that the model explains a significant amount of variance in the dependent variable compared to the residual variance. 
+
+The null hypothesis and alternative hypothesis for the F-ratio are stated as follows:
+
+- The **null hypothesis \(H_0\)** states that all coefficients are equal to zero, meaning that the predictors do not explain the variance in the dependent variable (median house value). Stated as:
 
   $$
   H_0: \beta_1 = \beta_2 = \beta_3 = \beta_4 = 0
   $$
+- The **alternative hypothesis \(H_a\)** states that at least one coefficient is not equal to zero. In our case, this means that at least one predictor explains the variance in the dependent variable (median house value). Stated as:
   $$
   H_a: \text{At least one } \beta_i \neq 0
   $$
+
+We also conduct a t-test to determine the significance of each individual predictor in the model:
+
+- The **null hypothesis \(H_{0i}\)** states that the coefficient for the predictor i is equal to zero, meaning that the predictor does not explain the variance in the dependent variable (median house value). Stated as:
 
   $$
   H_{0i}: \beta_i = 0
   $$
   
+- The **alternative hypothesis \(H_{ai}\)** states that the coefficient for the predictor i is not equal to zero, meaning that the predictor explains the variance in the dependent variable (median house value). Stated as:
+  
   $$
   H_{ai}: \beta_i \neq 0
   $$
+  
 ## Additional Analysis
 
 ## Software and Packages
