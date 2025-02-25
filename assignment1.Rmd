@@ -80,29 +80,28 @@ After data cleaning, the final dataset contained 1,720 observations.
 ## Exploratory Data Anaylsis
 
 ### Summary Statistics
-We will first examine the summary statistics of key variables in the dataset, including the dependent variables *MEDHVAL* (Median House Value), and predictors *NBELPOV100* (Households Living in Poverty), *PCTBACHMOR* (% of Individuals with Bachelor’s Degrees or Higher), *PCTVACANT*(% of Vacant Houses), *PCTSINGLES*( % of Single House Units). 
+We will first examine the summary statistics ( **mean** and **standard deviation (SD)**) of key variables in the dataset, including the dependent variables *MEDHVAL* (Median House Value), and predictors *NBELPOV100* (Households Living in Poverty), *PCTBACHMOR* (% of Individuals with Bachelor’s Degrees or Higher), *PCTVACANT*(% of Vacant Houses), *PCTSINGLES*( % of Single House Units). 
 
-We will examine the **mean** and **standard deviation (SD)** of key variables in the dataset.   
-
+ 
 The **mean** (\(\bar{X}\)) represents the average value of a variable and is calculated as:  
 
 $$
 \bar{X} = \frac{1}{n} \sum_{i=1}^{n} X_i
 $$  
 
-where:  
+where:
+
 - \(X_i\) represents each individual observation  
 - \(n\) is the total number of observations  
 
-The mean gives us a single representative value of the dataset, which helps in understanding the typical value for a given variable.  
-
-To measure variability, we use the **standard deviation (SD)**, which quantifies how much the values in a dataset deviate from the mean. The formula for the sample standard deviation (\(s\)) is:  
+The mean gives us a single representative value of the dataset. To measure variability, we use the **standard deviation (SD)**, which quantifies how much the values in a dataset deviate from the mean. The formula for the sample standard deviation (\(s\)) is:  
 
 $$
 s = \sqrt{\frac{1}{n-1} \sum_{i=1}^{n} \left( X_i - \bar{X} \right)^2}
 $$
 
-where:  
+where:
+
 - \(X_i\) represents each individual observation  
 - \(\bar{X}\) is the mean of the observations  
 - \(n\) is the total number of observations  
@@ -116,15 +115,17 @@ We will also examine the histograms and apply log transformations for key variab
 
 **Histograms** provide a visual representation of how a variable's values are distributed, helping to identify whether the data follows a **normal distribution**, is **right-skewed**, or **left-skewed**. Linear regression model assume that variables are approximately normally distributed.  
 
-- **X-axis:** The values of the variable (e.g., house prices, income levels).  
+- **X-axis:** The values of the variable (e.g., house prices, income levels). 
+
 - **Y-axis:** The frequency of observations within each bin.  
 
-If the histogram is **right-skewed**, it suggests that a small number of observations have significantly higher values compared to the rest. For variables following a **right-skewed distribution**, we will apply a **log transformation** to these variables to improve normality. Since the **log transformation** is undefined for zero or negative values, we must first check whether any variable contains zero.  
-- If **no zeros** are present, we apply the standard log transformation:  
+If the histogram is **right-skewed**, it suggests that a small number of observations have significantly higher values compared to the rest. For variables following a **right-skewed distribution**, we will apply a **log transformation** to these variables to improve normality. Since the **log transformation** is undefined for zero or negative values, we must first check whether any variable contains zero.
+
+- If **no zeros** presents, we apply the standard log transformation:  
 $$
   X' = \log_{10} (X)
 $$  
-- If **zeros are present**, we adjust by adding 1 before taking the log:  
+- If **zeros** present, we adjust by adding 1 before taking the log:  
 $$
   X' = \log_{10} (X + 1)
 $$  
@@ -251,6 +252,7 @@ We also conduct a t-test to determine the significance of each individual predic
   
 ## Additional Analysis
 
+
 ## Software and Packages
 
 In this analysis, we utilize the R programming language, a professional statistical software widely used for data analysis and visualization.The following libraries and packages have been employed to conduct the analysis:
@@ -324,7 +326,7 @@ kable(summary_stats, caption = "Summary Statistics",
 
 
 
-```{r}
+```{r, include=FALSE}
 #check 0
 columns_to_check <- c(dependent_var, predictors)
 
@@ -465,6 +467,39 @@ combined_plot <- (plot_list[[1]] + plot_list[[2]]) /
 combined_plot
 ```
 
+```{r, warning=FALSE, message=FALSE}
+
+custom_labels <- c(
+  "% of Individuals with Bachelor’s Degrees or Higher" = "PCTBACHMOR",
+  "% of Vacant Houses" = "PCTVACANT",
+  "% of Single House Units" = "PCTSINGLES",
+  "# Households Living in Poverty" = "LNNBELPOV100"
+)
+
+predictor_vars <- data[, c("PCTVACANT", "PCTSINGLES", "PCTBACHMOR", "LNNBELPOV100")]
+
+cor_matrix <- cor(predictor_vars, use = "complete.obs", method = "pearson")
+
+print(cor_matrix)
+rownames(cor_matrix) <- names(custom_labels)
+colnames(cor_matrix) <- names(custom_labels)
+
+
+ggcorrplot(cor_matrix, 
+           method = "square",   
+           type = "lower",      
+           lab = TRUE,       
+           lab_size = 3,      
+           colors = c("#d73027", "white", "#1a9850"))+
+    labs(title = "Correlation Matrix for all Predictor Variables") +
+    theme(plot.subtitle = element_text(size = 9, face = "italic"),
+        plot.title = element_text(size = 12, face = "bold"), 
+        axis.text.x = element_text(size = 7),
+        axis.text.y = element_text(size = 7), 
+        axis.title = element_text(size = 8))
+```
+
+## Regression Results
 
 ```{r regression}
 fit <- lm(LNMEDHVAL ~ PCTVACANT + PCTSINGLES + PCTBACHMOR + LNNBELPOV100, data=data)
@@ -476,6 +511,8 @@ anova_table <- anova(fit)
 anova_table
 ```
 
+
+## Regression Assumptions Check
 
 ```{r}
 fitted_values <- fitted(fit)
@@ -580,38 +617,8 @@ ggplot(shape)+
 
 
 
-```{r, warning=FALSE, message=FALSE}
 
-custom_labels <- c(
-  "% of Individuals with Bachelor’s Degrees or Higher" = "PCTBACHMOR",
-  "% of Vacant Houses" = "PCTVACANT",
-  "% of Single House Units" = "PCTSINGLES",
-  "# Households Living in Poverty" = "LNNBELPOV100"
-)
-
-predictor_vars <- data[, c("PCTVACANT", "PCTSINGLES", "PCTBACHMOR", "LNNBELPOV100")]
-
-cor_matrix <- cor(predictor_vars, use = "complete.obs", method = "pearson")
-
-print(cor_matrix)
-rownames(cor_matrix) <- names(custom_labels)
-colnames(cor_matrix) <- names(custom_labels)
-
-
-ggcorrplot(cor_matrix, 
-           method = "square",   
-           type = "lower",      
-           lab = TRUE,       
-           lab_size = 3,      
-           colors = c("#d73027", "white", "#1a9850"))+
-    labs(title = "Correlation Matrix for all Predictor Variables") +
-    theme(plot.subtitle = element_text(size = 9, face = "italic"),
-        plot.title = element_text(size = 12, face = "bold"), 
-        axis.text.x = element_text(size = 7),
-        axis.text.y = element_text(size = 7), 
-        axis.title = element_text(size = 8))
-```
-
+## Additional Analysis
 
 ```{r}
 stepwise_model <-  stepAIC(fit, direction = "both")
@@ -635,3 +642,6 @@ cvlm_model_reduced = train(LNMEDHVAL ~ PCTVACANT + MEDHHINC, data = data, method
 
 print(cvlm_model_reduced)
 ```
+
+
+# Discussion
