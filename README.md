@@ -1,7 +1,6 @@
 # MUSA5000 Homework 1: Using OLS Regression to Predict Median House Values in Philadelphia
 
-This assignment asks you to examine the relationship between median house values and several neighborhood characteristics, using Philadelphia data at the Census block group level. You will need R for this assignment. Remember that this report needs to be written with an introduction, methods/results, and discussion. Pointers for a successful report, as well as an example on how to interpret regression output, are included. Also included is an outline which you’re asked to follow when writing your report. Your submission may be written in MS Word (submitted as a .docx or .pdf file) or in R Markdown format.
-
+This assignment asks you to examine the relationship between median house values and several neighborhood characteristics, using Philadelphia data at the Census block group level. You will need R for this assignment. Remember that this report needs to be written with an introduction, methods/results, and discussion. Pointers for a successful report, as well as an example on how to interpret regression output, are included. Also included is an outline which you’re asked to follow when writing your report. 
 
 ## REPORT OUTLINE
 
