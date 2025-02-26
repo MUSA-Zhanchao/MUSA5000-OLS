@@ -252,6 +252,26 @@ We also conduct a t-test to determine the significance of each individual predic
   
 ## Additional Analysis
 
+### Stepwise Regression
+
+In addition to the multiple regression analysis, we conduct stepwise regression analysis to identify the most significant predictors of median house values in Philadelphia. Stepwise regression is a method that automatically selects the best subset of predictors for the model. It involves adding or removing predictors based on their statistical significance (P-value) and the AIC (Akaike Information Criterion). The stepwise regression analysis will help us identify the most important predictors and improve the overall model fits.
+
+However, there are several limitations to stepwise regression. First, the final stepwise regression model is not guaranteed to be optimal in any specific sense. There may be other models that are as good as, or even better than the one selected by stepwise regression, but the procedure only yeilds a single model. Second, the stepwise regression does take into account researchers' knowledge about the predictors. Important variables may be exclude from the model if they are not included in the initially. Moreover, This method also runs the risk of Type I and Type II errors—meaning it may include unimportant variables or exclude important ones. 
+
+### Cross-Validation
+
+To evaluate the performance of the regression model, we conduct K-fold cross-validation. Cross-validation is a technique used to evluate the performance of the predictive models. In K-fold Cross-Validation, the dataset is randomly divided into K equal-sized folds. The model is trained on K-1 folds and tested on the remaining fold. This process is repeated K times, with each fold serving as the test set exactly once. The average performance across all K folds is then calculated. Cross-validation helps to assess the model's generalization performance and reduce the risk of overfitting.
+
+In our analysis, we used K=5, which is a common choice for cross-validation. The root mean squared error (RMSE) is used to compare the performance of different models. The RMSE measures the difference between the predicted values and the actual values. A lower value of RMSE indicates a better predictive model.
+
+The mean square errors is calculated as follows:
+$$ 
+\text{MSE} = \frac{1}{n} \sum_{i=1}^{n} (y_i - \hat{y}_i)^2 
+$$
+And the root mean square errors (RMSE) is the square root of the mean square errors (MSE):
+$$
+\text{RMSE} = \sqrt{\text{MSE}}
+$$
 
 ## Software and Packages
 
