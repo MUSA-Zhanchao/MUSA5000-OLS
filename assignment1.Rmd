@@ -290,6 +290,9 @@ In this analysis, we utilize the R programming language, a professional statisti
 
 ## Exploratory Results 
 
+The table below presents the summary statistics for the key variables, an overview of the central tendency and variability. The dependent variable *median house value* has a mean of 66,287.73, indicating that the average median house value by census tract in Philadelphia is approximately 66,287.73 dollar. The standard deviation of 60,006.08 dollar suggests that house values exhibit significant variability across census tracts.
+
+For the predictor variables, all have standard deviations close to or greater than the mean, indicating large differences in educational attainment, economic status, housing occupancy, and housing structure composition across Philadelphia's census tracts.
 
 ```{r summary stats, warning=FALSE, message=FALSE}
 dependent_var <- "MEDHVAL"
@@ -345,6 +348,9 @@ kable(summary_stats, caption = "Summary Statistics",
 ```
 
 
+### Histogram Distribution
+
+One of the assumptions of OLS regression is that variables follow a normal distribution. To assess the distribution of key variables, their histograms are presented below. As seen in the plots, all key variables exhibit left-skewness, meaning their distributions are right-skewed (positively skewed), with a concentration of smaller values and a long right tail.
 
 ```{r, include=FALSE}
 #check 0
@@ -417,7 +423,15 @@ ggplot(longer_version2,aes(x = Value)) +
         axis.title=element_text(size=8))
 ```
 
+To meet the normality assumption of OLS, log transformation is applied where necessary to improve distributional symmetry. This transformation helps normalize the distributions, making them more suitable for regression analysis. The histograms of the log-transformed variables indicate a more normal-like distribution. However, some slight skewness remains: the dependent variable (*Log Median House Value*) and the predictor (*Log % Single House Value*) are slightly left-skewed, while the predictors *Log % Households in Poverty* and *Log % Vacant Houses* are slightly right-skewed.
 
+Other regression assumptions will be assessed separately in the Regression Assumption Checks section later.
+
+### Choropleth Maps
+
+Linearity assumes that the relationship between the dependent variable and the predictors is linear. To examine this relationship, we analyze the spatial distribution of key variables. Certain predictor maps exhibit patterns similar to the dependent variable, suggesting a strong potential relationship.
+
+Below is the choropleth map of the dependent variable, *Log Transformed Median House Value*. It reveals that central city areas and Germantown/Chestnut Hill have higher median house values, while North Philadelphia has lower values.  
 
 
 ```{r,fig.height=7, fig.width=9,warning=FALSE, message=FALSE}
@@ -438,7 +452,7 @@ ggplot(shape) +
         panel.border = element_rect(colour = "grey", fill = NA, size = 0.8)) +
   labs(title = "Log Transformed Median House Value")
 ```
-
+To understand the spatial relationship between the dependent variable and predictors, we present four key predictor maps below. These maps also help identify whether predictors are closely related to each other, which could cause multicollinearity problems. The *Percent of Bachelor's Degree or Higher* map looks very similar to the *Log Transformed Median House Value* map, suggesting that areas with more college graduates tend to have higher house values. Also, the *Percent of Vacant Houses* and *Percent of Single House Units* maps share a similar pattern—North Philadelphia and University City have a high percentage of vacant houses and a low percentage of single-house units, while Germantown/Chestnut Hill and Far Northeast Philadelphia show the opposite trend. This suggests that these two predictors may be strongly related, which could lead to multicollinearity issues in the regression analysis.
 
 ```{r, fig.height=12, fig.width=15, warning=FALSE, message=FALSE}
 shpe_longer<- shape %>%
@@ -486,6 +500,15 @@ combined_plot <- (plot_list[[1]] + plot_list[[2]]) /
 
 combined_plot
 ```
+
+
+### Examining Multicollinearity
+
+To further examine multicollinearity, we create a correlation matrix between predictors. All correlation values are below 0.7, indicating that no severe multicollinearity occurs in our model.  
+
+Among them, **% of Single House Units** and **Logged Households Living in Poverty** have a correlation of -0.32, suggesting some relationship but not strong enough to cause severe multicollinearity. Looking back at the choropleth maps of these two predictors, their spatial patterns are not similar. **% of Single House Units** and **% of Individuals with a Bachelor's Degree or Higher** have a correlation of -0.3, again indicating some relationship without severe multicollinearity. The choropleth maps of these two predictors also do not exhibit similar spatial patterns. Additionally, while the choropleth maps of **Percent of Vacant Houses** and **Percent of Single House Units** share a similar pattern, as mentioned before, their correlation value is only 0.2, suggesting a weak relationship without multicollinearity.  
+
+There is no severe multicollinearity among the predictors, supporting the assumptions of OLS regression. However, if the correlation matrix had shown high correlations (\\(|r| \geq 0.7\\)), we could further confirm the severity of multicollinearity using the **Variance Inflation Factor (VIF)** (**VIF < 5** indicates low multicollinearity and is generally acceptable, while **VIF \(\geq\) 5** suggests moderate to high multicollinearity that may require attention. If **VIF \(\geq\) 10**, severe multicollinearity is present, necessitating corrective measures).  
 
 ```{r, warning=FALSE, message=FALSE}
 
@@ -610,6 +633,20 @@ ggplot(data, aes(x = Standardized_Residuals)) +
 ```
 
 
+
+### Linear Relationship Plot
+
+
+To further examine the linear relationship between the dependent variable and the predictors, we create four scatter plots, where the x-axis represents each predictor and the y-axis represents the dependent variable, *Log Transformed Median House Value*.  
+
+From the plots, we observe the following trends:  
+
+- **Logged Households Living in Poverty** shows a clear negative linear relationship with the dependent variable. As the percentage of households living in poverty increases, the *Log Transformed Median House Value* decreases. This is reflected in its correlation coefficient \\(< 0\\).  
+- **% with Bachelor’s Degrees or Higher** exhibits a strong positive linear relationship with the dependent variable. When the percentage of individuals with a bachelor's degree or higher increases, the *Log Transformed Median House Value* also rises, with a correlation coefficient \\(> 0\\).  
+- **% of Single House Units** has a weaker but still positive relationship with the dependent variable. While the trend is not obvious, areas with a higher percentage of single-house units tend to have higher *Log Transformed Median House Values*, especially when the percentage is sufficiently large. The correlation coefficient is \\(> 0\\).  
+- **% of Vacant Houses** has a clear negative linear relationship with the dependent variable. As the percentage of vacant houses increases, the *Log Transformed Median House Value* decreases, with a correlation coefficient \\(< 0\\).  
+
+These findings suggest that poverty and vacancy rates are negatively associated with housing values, while higher education levels and a greater share of single-house units generally correspond to higher media house values.
 
 ```{r fig.height=7, fig.width=9, warning=FALSE, message=FALSE}
 longer<-data %>%
