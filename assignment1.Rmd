@@ -577,12 +577,15 @@ $$(1.01^{\beta} - 1) \times 100\% = (1.01^{-0.0789054} - 1) \times 100\%  \appro
 fit <- lm(LNMEDHVAL ~ PCTVACANT + PCTSINGLES + PCTBACHMOR + LNNBELPOV100, data=data)
 summary(fit)
 ```
+First, the residuals from the model show a reasonable distribution of errors, with a median residual of 0.03822, a minimum value of -2.26, a first quartile of -0.20, and a third quartile of 0.22, and a maximum value of 2.24. This distribution shows that the model captures the variability in the dependent variable well (logged transformed median home value), although some of the residuals are larger than 2.5 standard deviations from the mean, which are the outliers.
+
+Moreover, the model has a multiple \(R^2\) value of 0.6623 and an adjusted \(R^2\) value of 0.6615, indicating that approximately 66% of the variance in `LNMEDHVAL` is explained by the predictors.  The $F-statistic$ of 840.0 with a $p-value$ less than 0.0001, indicating that the model is statistically significant.
 
 ```{r}
 anova_table <- anova(fit)
 anova_table
 ```
-
+The Analysis of Variance (ANOVA) table shows additional insight into the significance of each predictor in explaining the variation in the dependent variable (`LNVMEDHVAL`). For proportion of vacant housing units (`PCTVACANT`), the sum of squares is 180.392, indicating that those amount of variation in `LNVMEDHVAL` that can be attributed to changes in `PCTVACANT`. 
 
 
 ## Regression Assumptions Check
