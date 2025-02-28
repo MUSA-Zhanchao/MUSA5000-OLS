@@ -521,7 +521,36 @@ ggcorrplot(cor_matrix,
 
 ## Regression Results
 
+### Parameter Estimations
+
+Four independent variables were included in the multiple regression model to predict the log-transformed median house value (`LNMEDHVAL`) in Philadelphia at census block group level, including the proportion of vacant housing units (`PCTVACANT`), the proportion of single-family housing units (`PCTSINGLES`), the proportion of residents with a bachelor's degree or higher (`PCTBACHMOR`), and the number of households living below the poverty line (`LNNBELPOV100`). The regression results are presented below:
+
 ```{r regression}
+fit <- lm(LNMEDHVAL ~ PCTVACANT + PCTSINGLES + PCTBACHMOR + LNNBELPOV100, data=data)
+summary(fit)
+```
+The regression output tells us that the median housing values are highly significant correlated with the proportion of vacant housing units(`PCTVANT`), the proportion of single-family housing units(`PCTSINGLES`), the proportion of residents with a bachelor's degree or higher (`PCTBACHMOR`), and the log-transformed number of households living below the poverty line (`LNNBELPOV`), with $p-value<0.0001$ for all four predictors. 
+
+As the proportions of vacant housing units (`PCTVANT`) goes up by 1 unit (1%), the median house value goes down by approximately 1.915%, with holding all other three predictors constant. In addition, the respective $p-value$ for $\beta_1$ is less than 0.0001, indicating that if there is no relationship between `PCTVANT` and the dependent variable (i.e., if the null hypothesis that \( \beta_1 = 0 \) is  true), then the probability of getting a \( \beta_1 \) coefficient estimate of -0.0191569 is less than 0.0001. We can safely reject the null hypothesis $H_0: \beta_1 = 0$ for $H_a: \beta_1 \neq 0$. 
+
+$$(e^{\beta} - 1) \times 100\% = (e^{-0.0191569} - 1) \times 100\% \approx -1.915\% $$
+
+
+Similarly, as the proportion of single-family housing units (`PCTSINGLES`) goes up by 1 unit (1%), the median house value goes up by approximately 0.298%, with holding all other three predictors constant. The $p-value$ for $\beta_2$ is less than 0.0001, indicating that if there is no relationship between `PCTSINGLES` and the dependent variable (i.e., if the null hypothesis that \( \beta_2 = 0 \) is  true), then the probability of getting a \( \beta_2 \) coefficient estimate of 0.0029769 is less than 0.0001. We can also safely reject the null hypothesis $H_0: \beta_2 = 0$ for $H_a: \beta_2 \neq 0$.
+
+$$(e^{\beta} - 1) \times 100\% = (e^{-0.0029769} - 1) \times 100\% \approx 0.298\% $$
+
+Furthermore, as the proportion of residents with a bachelor's degree or higher (`PCTBACHMOR`) goes up by 1 unit (1%), the median house value goes up by approximately 2.09%, with holding all other three predictors constant. Similar to $\beta_2$, the $p-value$ for $\beta_3$ is less than 0.0001, indicating that if there is no relationship between `PCTBACHMOR` and the dependent variable (i.e., if the null hypothesis that \( \beta_3 = 0 \) is  true, then the probability of getting a \( \beta_3 \) coefficient estimate of 0.0209098 is less than 0.0001. We can also safely reject the null hypothesis $H_0: \beta_3 = 0$ for $H_a: \beta_3 \neq 0$.
+
+$$(e^{\beta} - 1) \times 100\% = (e^{0.0209098} - 1) \times 100\% \approx 2.09\% $$
+
+Lastly, as 1 percent increase in the number of households living below the poverty line, the median house value goes down by approximately 0.078% , with holding all other three predictors constant. The $p-value$ for $\beta_4$ is also less than 0.0001  indicating that if there is no relationship between number of households below poverty line and the dependent variable (i.e., if the null hypothesis that \( \beta_4 = 0 \) is  true), then the probability of getting a \( \beta_4 \) coefficient estimate of -0.0789054 is less than 0.0001. As stated before, we can also safely reject the null hypothesis $H_0: \beta_4 = 0$ for $H_a: \beta_4 \neq 0$.
+
+$$(1.01^{\beta} - 1) \times 100\% = (1.01^{-0.0789054} - 1) \times 100\%  \approx -0.078\%$$
+
+### Model Fit
+
+```{r regression1}
 fit <- lm(LNMEDHVAL ~ PCTVACANT + PCTSINGLES + PCTBACHMOR + LNNBELPOV100, data=data)
 summary(fit)
 ```
@@ -532,9 +561,10 @@ anova_table
 ```
 
 
+
 ## Regression Assumptions Check
 
-```{r}
+```{r, include= FALSE}
 fitted_values <- fitted(fit)
 residuals_values <- residuals(fit)
 standardized_residuals <- rstandard(fit)
