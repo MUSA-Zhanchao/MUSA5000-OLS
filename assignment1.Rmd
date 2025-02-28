@@ -292,7 +292,7 @@ In this analysis, we utilize the R programming language, a professional statisti
 
 The table below presents the summary statistics for the key variables, an overview of the central tendency and variability. The dependent variable *median house value* has a mean of 66,287.73, indicating that the average median house value by census tract in Philadelphia is approximately 66,287.73 dollar. The standard deviation of 60,006.08 dollar suggests that house values exhibit significant variability across census tracts.
 
-For the predictor variables, all have standard deviations close to or greater than the mean, indicating large differences in educational attainment, economic status, housing occupancy, and housing structure composition across Philadelphia's census tracts.
+For the predictor variables, all have standard deviations close to or greater than the mean, indicating large differences in educational attainment, economic status, housing occupancy, and housing structure composition across Philadelphia's census block groups.
 
 ```{r summary stats, warning=FALSE, message=FALSE}
 dependent_var <- "MEDHVAL"
@@ -362,17 +362,6 @@ zero_counts[zero_counts > 0]
 
 ```
 
-```{r}
-data <- data %>%
-  mutate(
-    LNMEDHVAL = log(MEDHVAL),
-    LNPCTBACHMOR = log(1+PCTBACHMOR),
-    LNNBELPOV100 = log(1+NBELPOV100),
-    LNPCTVACANT = log(1+PCTVACANT),
-    LNPCTSINGLES = log(1+PCTSINGLES)
-  )
-```
-
 ```{r, fig.height=7, fig.width=9, warning=FALSE, message=FALSE}
 longer_version<- data %>%
   pivot_longer(cols = c("MEDHVAL", "PCTBACHMOR", "NBELPOV100", "PCTVACANT", "PCTSINGLES"),
@@ -397,9 +386,19 @@ ggplot(longer_version,aes(x = Value)) +
         axis.title=element_text(size=8))
 ```
 
+To meet the normality assumption of OLS, log transformation is applied where necessary to improve distributional symmetry. This transformation helps normalize the distributions, making them more suitable for regression analysis. The histograms of the log-transformed variables indicate a more normal-like distribution. However, some slight skewness remains: the dependent variable (*Log Median House Value*) and the predictor (*Log % Single House Value*) are slightly left-skewed, while the predictors *Log % Households in Poverty* and *Log % Vacant Houses* are slightly right-skewed.
+```{r}
+data <- data %>%
+  mutate(
+    LNMEDHVAL = log(MEDHVAL),
+    LNPCTBACHMOR = log(1+PCTBACHMOR),
+    LNNBELPOV100 = log(1+NBELPOV100),
+    LNPCTVACANT = log(1+PCTVACANT),
+    LNPCTSINGLES = log(1+PCTSINGLES)
+  )
+```
 
 ```{r, fig.height=7, fig.width=9, warning=FALSE, message=FALSE}
-# histograms of the transformed variables
 longer_version2 <- data %>%
   pivot_longer(cols = c(LNMEDHVAL, LNPCTBACHMOR ,LNNBELPOV100,LNPCTVACANT, LNPCTSINGLES),
                names_to = "Variable",
@@ -423,7 +422,6 @@ ggplot(longer_version2,aes(x = Value)) +
         axis.title=element_text(size=8))
 ```
 
-To meet the normality assumption of OLS, log transformation is applied where necessary to improve distributional symmetry. This transformation helps normalize the distributions, making them more suitable for regression analysis. The histograms of the log-transformed variables indicate a more normal-like distribution. However, some slight skewness remains: the dependent variable (*Log Median House Value*) and the predictor (*Log % Single House Value*) are slightly left-skewed, while the predictors *Log % Households in Poverty* and *Log % Vacant Houses* are slightly right-skewed.
 
 Other regression assumptions will be assessed separately in the Regression Assumption Checks section later.
 
@@ -452,7 +450,8 @@ ggplot(shape) +
         panel.border = element_rect(colour = "grey", fill = NA, size = 0.8)) +
   labs(title = "Log Transformed Median House Value")
 ```
-To understand the spatial relationship between the dependent variable and predictors, we present four key predictor maps below. These maps also help identify whether predictors are closely related to each other, which could cause multicollinearity problems. The *Percent of Bachelor's Degree or Higher* map looks very similar to the *Log Transformed Median House Value* map, suggesting that areas with more college graduates tend to have higher house values. Also, the *Percent of Vacant Houses* and *Percent of Single House Units* maps share a similar pattern—North Philadelphia and University City have a high percentage of vacant houses and a low percentage of single-house units, while Germantown/Chestnut Hill and Far Northeast Philadelphia show the opposite trend. This suggests that these two predictors may be strongly related, which could lead to multicollinearity issues in the regression analysis.
+
+To understand the spatial relationship between the dependent variable and predictors, we present four key predictor maps below as well. 
 
 ```{r, fig.height=12, fig.width=15, warning=FALSE, message=FALSE}
 shpe_longer<- shape %>%
@@ -501,8 +500,9 @@ combined_plot <- (plot_list[[1]] + plot_list[[2]]) /
 combined_plot
 ```
 
+These maps also help identify whether predictors are closely related to each other, which could cause multicollinearity problems. The *Percent of Bachelor's Degree or Higher* map looks very similar to the *Log Transformed Median House Value* map, suggesting that areas with more college graduates tend to have higher house values. Also, the *Percent of Vacant Houses* and *Percent of Single House Units* maps share a similar pattern—North Philadelphia and University City have a high percentage of vacant houses and a low percentage of single-house units, while Germantown/Chestnut Hill and Far Northeast Philadelphia show the opposite trend. This suggests that these two predictors may be strongly related, which could lead to multicollinearity issues in the regression analysis.
 
-### Examining Multicollinearity
+### Examining Multicollinearity & Correlation Matrix
 
 To further examine multicollinearity, we create a correlation matrix between predictors. All correlation values are below 0.7, indicating that no severe multicollinearity occurs in our model.  
 
