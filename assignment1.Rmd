@@ -678,6 +678,9 @@ However, there are still some noticeable deviations from perfect normality at th
 
 ### Homoscedasticity
 
+After checking the normality of residuals, we examine the homoscedasticity, which requires that the residuals have constant variance across all levels of the fitted values. The standard is the residuals divided by their standard error. $$e_i^* \approx \frac{\epsilon_i}{s} \approx \frac{\epsilon_i}{\sqrt{\frac{SSE}{n-2}}}$$
+The scatter plot of standardized residuals against fitted values is a valuable tool for assessing homoscedasticity:
+
 ```{r}
 ggplot(data, aes(x = Fitted, y = Standardized_Residuals)) +
   geom_point(color = "black", size= 0.4) +    
@@ -694,6 +697,13 @@ ggplot(data, aes(x = Fitted, y = Standardized_Residuals)) +
         axis.text.y=element_text(size=6), 
         axis.title=element_text(size=8))
 ```
+The scatterplot show no clear pattern in the residuals, as the predicted values rising or falling. Instead, they seem to be pretty randomly distributed around the 0 line, indicating that the residuals have constant variance across all levels of the fitted values.There is no obvious funnel shpe or systematic variation trend suggests that the assumption of homoscedasticity is satisfied. In addition, the residuals are generally symmetrical distributed around the 0 line,which indicate the model does not systemically over- or under-predicted the dependent variable over the range of fitted values.
+
+However, the plot does show some potential outliers, particularly those points are outside -3 and 3 standardized residuals. These extreme residuals are located upper or lower of the main residual clusters and may indicate that the model's predicted values deviate significantly from the actual values. Although the number of residuals is relative small, their presence indicates that the model may not fit all data well.
+
+### Independence of Observations
+
+The last assumption we test here is the independence of observations. In our case, we are particularly interested in checking for spatial autocorrelation, which occurs when the residuals are correlated in space. 
 
 
 ```{r, fig.height=7, fig.width=9, warning=FALSE, message=FALSE}
@@ -727,11 +737,21 @@ ggplot(shape)+
 
 ## Additional Analysis
 
+### Stepwise Regression
+
+We performed stepwise regression to determine the most relevant predictors for the model. The initial model included all four predictors, with a residual sum of squares of 230.34 and an Akaikie Information Criterion (AIC) of -3448.07. A lower AIC value indicates a better balance between model fit and complexity.
 ```{r}
 stepwise_model <-  stepAIC(fit, direction = "both")
+```
+The stepwise process examined whether removing each predictor would reduce the AIC and improve the model fit. However, removing any predictors resulted in a higher AIC and increased in residual sum of squares(RSS), indicating that all four predictors are important for the model. For instance, reducing the proportion of vacant housing units (`PCTVACANT`) from the model increased the AIC to -3102.7 and increase the residual sum of squares to 281.89, indicating a severe decline in model performance. 
+
+As a result, non of the predictors were removed from the model, as eliminating any of them worsened the performance. Therefore, the final model remained unchanged from the initial one which include all four predictors. 
+```{r}
 stepwise_model$anova
 ```
 
+### Cross-Validation
+We also performed 5 fold cross-validation to access the model's predictive power and determine hwether a model with fewer predictors could perform better.
 ```{r cross validation, message=FALSE, warning = FALSE}
 
 lm <-  trainControl(method = "cv", number = 5)
@@ -742,14 +762,13 @@ print(cvlm_model)
 
 ```
 
-
 ```{r reduce cv model,message=FALSE, warning=FALSE}
 
 cvlm_model_reduced = train(LNMEDHVAL ~ PCTVACANT + MEDHHINC, data = data, method = "lm", trControl = lm)
 
 print(cvlm_model_reduced)
 ```
-
+The original model with all four predictors had a root mean squared error (RMSE) of 0.3666183, while the reduced model with only two predictors, the percentage of vacant houses (`PCTVACANT`) and median household income (`MEDHHINC`), had a higher RMSE of 0.4416494. A higher root mean square error (RMSE) indicate that the model's predictions deviate more from the actual values, suggesting lower accuracy and a poorer fit to the data. Overall, original model provides better predictive accuracy. The original model outperforms the reduced model, demonstrating that all four predictors contribute to improved model accuracy.
 
 # Discussion
 
