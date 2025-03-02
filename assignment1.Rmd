@@ -152,7 +152,12 @@ where:
 The correlation coefficient \(r\) ranges from **-1 to 1**: A value of +1 indicates a perfect positive linear relationship, while a value of -1 indicates a perfect negative linear relationship. A value of 0 suggests no linear relationship between the variables, meaning changes in one do not influence the other.
 
 ## Multiple Regression Analysis
+<<<<<<< HEAD
 After getting a general sense of the data, we conduct multiple regression analysis to examine the relationship between the dependent variable, **Median House Value** (`MEDHVAL`), and the predictors, **education attainment** (`PCTBACHMOR`), **number of Households Living in Poverty** (`NBELPOV100`), **percentage of Vacant Houses** (`PCTVACANT`), and **percentage of Single-family House Units **(`PCTSINGLES`). Regression analysis is a statistical method to examine the relationship between a dependent variable and one or more predictors. With this type of analysis, researchers can identify the strength and direction of the relationship between variables, make predictions, and assess the significance of predictors. The model also estimates coefficients for each predictor, which represent the expected change in the dependent variable for a one-unit change in the predictor, holding other predictors constant. For this study, the multiple regression model is formulated as follows:
+=======
+
+After obtaining a general understanding of the data, we conduct multiple regression analysis to examine the relationship between the dependent variable, **Median House Value (MEDHVAL)**, and the predictors: **education attainment (PCTBACHMOR)**, **number of Households Living in Poverty (NBELPOV100)**, **percentage of Vacant Houses (PCTVACANT)**, and **percentage of Single House Units (PCTSINGLES)**. Regression analysis is a statistical method used to examine the relationship between a dependent variable and one or more predictors, allowing researchers to determine both the strength and direction of these relationships, make predictions, and assess the statistical significance of each predictor. The model also estimates coefficients for each predictor, which represent the expected change in the dependent variable for a one-unit change in the predictor, holding other predictors constant. For this study, the multiple regression model is formulated as follows:
+>>>>>>> 6ab4852bf8125a654a8bb65a99629f1a1b335707
 $$
 \text{LNMEDHVAL} = \beta_0 + \beta_1 \text{PCTVACANT} + \beta_2 \text{PCTSINGLES} + \beta_3 \text{PCTBACHMOR} + \beta_4 \text{log(NBELPOV100)} + \epsilon
 $$
@@ -162,7 +167,11 @@ where **LNMEDHVAL** is the log-transformed median house value, **PCTVACANT** is 
 
 ### Regression Assumptions
 
+<<<<<<< HEAD
 For the results of the regression analysis to be valid, several key assumptions must be met.  These assumptions including **linearity**, **independence of observations**, **homoscedasticity**, **normality of residuals**, **no multicollinearity**, and **no fewer than 10 observations per predictors**.
+=======
+For the results of the regression analysis to be valid, several key assumptions must be met. These assumptions include **linearity**, **independence of observations**, **homoscedasticity**, **normality of residuals**, **no multicollinearity**, and **no fewer than 10 observations per predictors**.
+>>>>>>> 6ab4852bf8125a654a8bb65a99629f1a1b335707
 
 - **Linearity** assumes that the relationship between the dependent variable and the predictors is linear. To verify this assumption, we made scatter plots of the dependent variable against each predictor. If the relationship appears to be linear, the assumptions was met.
 
@@ -178,9 +187,15 @@ For the results of the regression analysis to be valid, several key assumptions 
 
 ### Parameter Estimations
 
+<<<<<<< HEAD
 After verifing the assumptions of the regression, we start the regression analysis. Wh estimate the following parameters: 
 - \( \beta_0 \), which is the intercept
 - \( \beta_1, \dots, \beta_k \), which are the coefficients of each independent variables
+=======
+After verifing the assumptions of the regression, we start the regression analysis. We estimate the following parameters: 
+- \( \beta_0 \), which is the intercept
+- \( \beta_1, \dots, \beta_k \), which are the coefficients of each independent variable
+>>>>>>> 6ab4852bf8125a654a8bb65a99629f1a1b335707
 - \( \sigma^2 \), the variance of the error terms, which quantifies the variability in the dependent variable that is not explained by the predictors.
 
 The least squares method estimates the coefficients by minimizing **the sum of squared errors (SSE)**, which is the sum of the squared differences between the observed values and the predicted values. The formula for SSE is:
@@ -216,7 +231,7 @@ $$
 
 ### Hypothesis Testing
 
-In this analysis. several hypothesis tests are conducted to determine the significance of the model and its predictors. The overall significance of the model is assessed using the **F-ratio**. It compares the variance explained by the model to the variance not explained by the model.A higher F-ratio indicates that the model explains a significant amount of variance in the dependent variable compared to the residual variance. 
+In this analysis, several hypothesis tests are conducted to determine the significance of the model and its predictors. The overall significance of the model is assessed using the **F-ratio**. It compares the variance explained by the model to the variance not explained by the model.A higher F-ratio indicates that the model explains a significant amount of variance in the dependent variable compared to the residual variance. 
 
 The null hypothesis and alternative hypothesis for the F-ratio are stated as follows:
 
@@ -777,7 +792,7 @@ In this study, we analyzed Philadelphia census block group data (n = 1,720) to e
 
 The model’s overall quality is supported by an R² of approximately 0.66 and a highly significant F-ratio, indicating a strong overall fit. Stepwise regression, guided by the Akaike Information Criterion, retained all four predictors (`PCTVACANT`, `PCTSINGLES`, `PCTBACHMOR`, and `LNNBELPOV100`), demonstrating that each variable contributes meaningfully to explaining the variation in the median house value. 
 
-Furthermore, 5-fold cross-validation, evaluated using root mean square error (RMSE), showed that the full model performs better than a reduced model that includes only the percentage of vacant houses (`PCTVACANT`) and median household income. These validation techniques reinforce our confidence in the robustness and predictive power of our model.
+Furthermore, 5-fold cross-validation, evaluated using root mean square error (RMSE), showed that the full model performs better than a reduced model that includes only the percentage of vacant houses (`PCTVACANT`) and median household income(`MEDHHINC`). These validation techniques reinforce our confidence in the robustness and predictive power of our model.
 
 ### Limitations of the Model
 
