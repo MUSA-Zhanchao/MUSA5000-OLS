@@ -770,40 +770,30 @@ print(cvlm_model_reduced)
 ```
 The original model with all four predictors had a root mean squared error (RMSE) of 0.3666183, while the reduced model with only two predictors, the percentage of vacant houses (`PCTVACANT`) and median household income (`MEDHHINC`), had a higher RMSE of 0.4416494. A higher root mean square error (RMSE) indicate that the model's predictions deviate more from the actual values, suggesting lower accuracy and a poorer fit to the data. Overall, original model provides better predictive accuracy. The original model outperforms the reduced model, demonstrating that all four predictors contribute to improved model accuracy.
 
-# Discussion
+# Discussion and Limitations
 
-Our regression analysis of Philadelphia’s census block group data clearly shows how neighborhood characteristics affect housing values. Our model explains about 66% of the variation in the log-transformed median house value (LNMEDHVAL). This indicates that factors such as the percentage of vacant houses (PCTVACANT), the percentage of single-family homes (PCTSINGLES), the percentage of residents with at least a bachelor’s degree (PCTBACHMOR), and the log-transformed number of households living below the poverty line (LNNBELPOV100) are all important in shaping housing market outcomes.
+In this study, we analyzed Philadelphia census block group data (n = 1,720) to examine how neighborhood characteristics relate to median house values. To address non-normality, we applied a logarithmic transformation to the median house value, which allows us to interpret the regression coefficients as approximate percentage changes in the median house value. Our regression analysis revealed that for every 1-percentage point increase in the percentage of vacant houses (PCTVACANT), the median house value decreases by approximately 1.915%. Similarly, a 1-percentage point increase in the percentage of single-family homes (PCTSINGLES) is associated with a roughly 0.298% increase in the median house value, while a 1-percentage point increase in the percentage of residents with at least a bachelor’s degree (PCTBACHMOR) corresponds to about a 2.09% increase. In contrast, every 1-percentage point increase in the log-transformed number of households living below the poverty line (LNNBELPOV100) is linked with approximately a 0.078% decrease in the median house value. Overall, our model explains about 66% of the variation in the dependent variable, indicating that the selected predictors significantly influence median house values. While most results were in line with expectations, the relatively small impact of the percentage of single-family homes (PCTSINGLES) was somewhat surprising.
 
-**Interpreting the Results:**
+## Model Quality and Additional Analyses
 
-**Need to rewrite** We cannot include log-transformed value directly into the report, see the above interpret section for the interpretation of the results.
+The model’s overall quality is supported by an R² of approximately 0.66 and a highly significant F-ratio, indicating a strong overall fit. Stepwise regression, guided by the Akaike Information Criterion, retained all four predictors (PCTVACANT, PCTSINGLES, PCTBACHMOR, and LNNBELPOV100), demonstrating that each variable contributes meaningfully to explaining the variation in the median house value. 
 
-**Checking the Model Assumptions:**
+Furthermore, 5-fold cross-validation, evaluated using root mean square error (RMSE), showed that the full model performs better than a reduced model that includes only the percentage of vacant houses (PCTVACANT) and median household income. These validation techniques reinforce our confidence in the robustness and predictive power of our model.
 
-**b)	Talk about the quality of the model – that is, state if this is a good model overall (e.g., R2, F-ratio test), and what other predictors that we didn’t include in our model might be associated with our dependent variable.**
-i.	Looking at the stepwise regression results, did the final model include all 4 predictors or were some dropped? What does that tell you about the quality of the model? 
-ii.	Looking at the cross-validation results, was the RMSE better for the 4 predictor model or the 2 predictor model?  
-
-
-
-To validate our model, we performed stepwise regression using the Akaike Information Criterion (AIC) and conducted 5-fold cross-validation. The stepwise regression confirmed that the selected predictors contribute to a strong model fit, while the cross-validation results showed that the full model which includes all the four predictors performs better than a reduced model that only includes the percentage of vacant houses (PCTVACANT) and median household income. These results strengthen our confidence in the predictive power and robustness of the model.
-
-
-
-**Policy Implications: A Focus on Inclusive Growth and Stability: (one paragraph only)**
-
-The findings have important implications for urban policy, particularly in ensuring that strategies to improve housing markets do not lead to displacement or increased housing burdens for vulnerable communities. The strong negative impact of vacancy rates (PCTVACANT) on housing values suggests that reducing long-term vacancies could play a role in neighborhood stabilization. However, rather than policies that solely focus on increasing property values, interventions should prioritize equitable investment like rehabilitating vacant properties for affordable housing, expanding community land trusts, and offering support for longtime residents at risk of displacement.
-
-Similarly, the strong relationship between educational attainment (PCTBACHMOR) and housing values highlights the importance of expanding access to high-quality education and workforce development. However, increasing education levels alone does not ensure equitable housing outcomes if housing costs rise beyond affordability for existing residents. Thus, policies should be designed to balance educational investment with affordability measures, such as rental assistance programs and first-time homebuyer support for lower-income households.
-
-The negative association between poverty levels (LNNBELPOV100) and housing values highlights the need for housing policies that actively combat economic inequality and support affordable, stable communities. Solutions such as mixed-income housing developments, income-based tax credits, and expanded tenant protections can help ensure that economic mobility does not come at the cost of displacement. The goal should be to create stable, mixed-income communities where economic growth benefits both current residents and new arrivals.
-
-**Limitations and Future Research:**
-
-Although our model provides a strong understanding of housing market dynamics, there are several limitations that future research should address. First, while our model explains a significant portion of the variation in housing values, about one-third remains unexplained. This suggests that other factors like access to transportation, historical redlining patterns, or the presence of public amenities may play important roles and should be explored in future studies.
-
-The potential presence of spatial autocorrelation suggests that neighboring block groups may not be entirely independent, which could bias some estimates. Incorporating spatial econometric techniques, such as spatial lag models or geographically weighted regression, could improve the accuracy of future analyses.
-
-### Possibility of Ridge or LASSO Regression
+## Possibility of Ridge or LASSO Regression
 
 Ridge and LASSO regression are used when there are highly correlated predictors or when only a subset of features is expected to be truly important. In such cases, some predictor coefficients may become excessively large, leading to overfitting in a linear model. These methods manage overfitting by adding a penalty term to the loss function, which constrains the coefficients. However, in our model, the highest correlation between predictors is 0.32, indicating no significant multicollinearity. Additionally, no predictor exhibits excessively large coefficients. Therefore, applying Ridge or LASSO regression in this case would be unnecessary.
+
+## Limitations of the Model
+
+Despite the robust performance of our model, several limitations should be noted:
+
+**Spatial Autocorrelation:** Choropleth maps indicate that median house values and some predictors display spatial clustering. This suggests that neighboring census block groups may influence one another, potentially biasing our parameter estimates. Future research should incorporate spatial econometric techniques, such as Moran’s I or spatial lag models, to address this issue.
+
+**Measurement of Poverty:** The variable representing households living below the poverty line (LNNBELPOV100) is used as a raw count rather than as a percentage. This choice may obscure relative differences in poverty levels across block groups and affect the interpretation of its impact on median house values.
+
+**Zero-Inflated Distributions:** Although the logarithmic transformation improved the normality of most variables, it may not fully address the zero-inflated nature of some predictors. Future studies could explore alternative transformation methods or models that are better suited for handling zero-heavy distributions.
+
+##Future Research and Policy Implications
+
+Our findings have significant implications for urban policy aimed at promoting community stability and equitable growth. The strong negative effect of higher vacancy rates (PCTVACANT) on median house values suggests that policies focused on rehabilitating vacant properties or supporting community-based investments could help stabilize neighborhoods without displacing existing residents. Similarly, the positive association between educational attainment (PCTBACHMOR) and median house values highlights the importance of policies that enhance educational opportunities while also ensuring affordable housing for long-term residents. Future research should consider incorporating additional predictors, such as access to public amenities, quality of local services, or historical neighborhood trends, and should employ spatial econometric techniques to capture spatial dependencies more accurately. Although our current analysis does not warrant the use of Ridge or LASSO regression, these methods might be revisited in future studies if the dataset expands or if additional predictors are included.
