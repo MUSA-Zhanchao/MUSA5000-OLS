@@ -14,11 +14,11 @@ jobs:
       - name: Checkout main branch
         uses: actions/checkout@v3
 
-      # Step 2: Copy the HTML file to a deployment folder
-      - name: Copy HTML for deployment
+      # Step 2: Prepare the deployment directory and rename your HTML file to index.html
+      - name: Prepare deployment directory
         run: |
           mkdir deploy
-          cp index.html deploy/
+          cp assignment1.html deploy/index.html
 
       # Step 3: Deploy the content of the deploy folder to the gh-pages branch
       - name: Deploy to GitHub Pages
