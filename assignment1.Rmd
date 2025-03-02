@@ -598,6 +598,7 @@ In this section, we conducted variety of analysis to check if the assumption of 
 - Linearity
 - Normality of Residuals
 - Homoscedasticity
+- Independence of Observations without time and space autocorrelation
 
 ### Linearity
 
@@ -645,7 +646,6 @@ In summary, the scatterplot shows that while the PCTBACHMOR and LNMEDHVAL have a
 ### Normality of Residuals
 
 Next, we examine the normality of residuals of the regression model. The histogram of standardized residuals provides a detail view of the  of the distribution of the residuals from the OLS model, showing below:
-
 ```{r, include= FALSE}
 fitted_values <- fitted(fit)
 residuals_values <- residuals(fit)
@@ -671,6 +671,12 @@ ggplot(data, aes(x = Standardized_Residuals)) +
         axis.text.y=element_text(size=6), 
         axis.title=element_text(size=8))
 ```
+
+This graph indicate a general normal distribution of the residuals, with a bell shape curve centered around 0. The majority of the residuals are concentrated between -2 and 2 on the x-axis, with the highest frequency around 0. This concentration suggests that most of the predicted values are close to the actual values, leading to residuals that are small and symmetrically distributed around 0. This generally met the assumption of the normality of residuals in OLS regression.
+
+However, there are still some noticeable deviations from perfect normality at the tails of the distribution. On the left side, there are few residuals with values smaller than -3, and on the right side, there are few residuals with values larger than 3. These outliers indicate that the model may not be capturing all the variability in the dependent variable, leading to some large residuals. While the majority of the residuals are normally distributed, these outliers suggest that the model may not be fully capturing the complexity of the relationship between the predictors and the dependent variable. Further examination of those specific data points may be necessary to understand the reasons for these large residuals.
+
+### Homoscedasticity
 
 ```{r}
 ggplot(data, aes(x = Fitted, y = Standardized_Residuals)) +
