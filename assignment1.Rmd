@@ -113,7 +113,7 @@ We will also examine the histograms and apply logarithmic transformations to key
 
 - **Y-axis:** Represents the frequency of observations within each bin.  
 
-If the histogram is **right-skewed**, it suggests that a small number of observations have significantly higher values compared to the rest. For variables following a **right-skewed distribution**, we will apply a **log transformation** to these variables to improve normality. Since the **log transformation** is undefined for zero or negative values, we must first check whether any variable contains zero.
+A **right-skewed** histogram suggests that a small number of observations have significantly higher values compared to the rest. For variables that exhibit **right-skewness**, a **log transformation** can improve normality. Since the **log transformation** is undefined for zero or negative values, we must first check whether any variable contains zero.
 
 - If **no zeros** presents, we apply the standard log transformation:  
 $$
