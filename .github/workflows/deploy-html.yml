@@ -1,41 +1,28 @@
-name: Deploy HTML to New Branch
+name: Deploy HTML to GitHub Pages
 
 on:
   push:
     branches:
-      - main  # Change this if your default branch is different
+      - main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      # Step 1: Check out the main branch
+      - name: Checkout main branch
+        uses: actions/checkout@v3
 
-      - name: Create new branch
+      # Step 2: Copy the HTML file to a deployment folder
+      - name: Copy HTML for deployment
         run: |
-          git checkout -b deploy-branch || git checkout deploy-branch
-          git push origin deploy-branch --force
+          mkdir deploy
+          cp index.html deploy/
 
-      - name: Find and Rename HTML file to index.html
-        run: |
-          mkdir -p deploy
-          HTML_FILE=$(find . -maxdepth 1 -name "*.html" | head -n 1)
-          if [[ -n "$HTML_FILE" ]]; then
-            cp "$HTML_FILE" deploy/index.html
-          else
-            echo "No HTML file found!"
-            exit 1
-          fi
-          ls deploy
-
-      - name: Commit and push
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add deploy/index.html
-          git commit -m "Deploy index.html to deploy-branch" || echo "No changes to commit"
-          git push origin deploy-branch --force
-
-
+      # Step 3: Deploy the content of the deploy folder to the gh-pages branch
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./deploy
