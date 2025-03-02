@@ -89,7 +89,7 @@ where:
 - \(X_i\) represents each individual observation  
 - \(n\) is the total number of observations  
 
-The mean provides a single representative value of the dataset. To measure variability, we use the **standard deviation (SD)**, which quantifies how much the values in a dataset deviate from the mean. The formula for the sample standard deviation (\(s\)) is:  
+The mean provides a single representative value of the dataset. To measure the variability of the data, we use the **standard deviation (SD)**, which quantifies how much the values in a dataset deviate from the mean. The formula for the sample standard deviation (\(s\)) is:  
 
 $$
 s = \sqrt{\frac{1}{n-1} \sum_{i=1}^{n} \left( X_i - \bar{X} \right)^2}
@@ -101,8 +101,7 @@ where:
 - \(\bar{X}\) is the mean of the observations  
 - \(n\) is the total number of observations  
 
-A larger standard deviation indicates that the data points are more spread out, while a smaller standard deviation suggests that the data points are closer to the mean.  
-
+A larger standard deviation indicates that the data points are more spread out, while a smaller standard deviation suggests that the data points are more closely clustered around the mean.  
 
 ### Distributions 
 
