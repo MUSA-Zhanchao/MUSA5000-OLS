@@ -38,9 +38,4 @@ jobs:
           git commit -m "Deploy index.html to deploy-branch" || echo "No changes to commit"
           git push origin deploy-branch --force
 
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: deploy-branch
-          publish_dir: ./deploy
+
