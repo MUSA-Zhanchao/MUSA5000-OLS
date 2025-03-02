@@ -736,4 +736,42 @@ print(cvlm_model_reduced)
 
 # Discussion
 
+Our regression analysis of Philadelphia’s census block group data clearly shows how neighborhood characteristics affect housing values. Our model explains about 66% of the variation in the log-transformed median house value (LNMEDHVAL). This indicates that factors such as the percentage of vacant houses (PCTVACANT), the percentage of single-family homes (PCTSINGLES), the percentage of residents with at least a bachelor’s degree (PCTBACHMOR), and the log-transformed number of households living below the poverty line (LNNBELPOV100) are all important in shaping housing market outcomes.
 
+**Interpreting the Results:**
+
+The analysis finds that a higher percentage of vacant houses (PCTVACANT) is strongly associated with lower housing values. For every one-percentage point increase in the percentage of vacant houses (PCTVACANT), there is an approximate 1.915% decrease in the log-transformed median house value (LNMEDHVAL), assuming all other factors remain constant. This suggests that concentrated vacancies could signal neighborhood disinvestment, which may discourage future investment and reduce housing stability.
+
+In contrast, neighborhoods with a higher percentage of single-family homes (PCTSINGLES) and a higher percentage of residents with at least a bachelor’s degree (PCTBACHMOR) tend to see higher housing values. Although the positive effect of the percentage of single-family homes (PCTSINGLES) is statistically significant, it is relatively modest. The effect of educational attainment is more pronounced—a one-percentage point increase in the percentage of residents with at least a bachelor’s degree (PCTBACHMOR) is associated with about a 2.09% increase in the log-transformed median house value (LNMEDHVAL). This reflects the broader link between education levels and economic opportunity, which in turn can drive housing demand.
+
+Additionally, the model shows that the log-transformed number of households living below the poverty line (LNNBELPOV100) is negatively associated with median housing values, though the effect size is smaller (about a 0.078% decrease per percentage point increase). This suggests that economic hardship remains a key determinant of neighborhood housing conditions, reinforcing the importance of policies that address long-term affordability and economic mobility.
+
+**Checking the Model Assumptions:**
+
+To ensure our model’s reliability, we conducted several diagnostic tests. Scatter plots of standardized residuals versus predicted values indicate that most residuals are randomly distributed around zero, though a few outliers exist. The histogram of standardized residuals approximates a normal distribution, which suggests that our assumption of normally distributed errors is reasonably satisfied.
+
+The choropleth maps provide further spatial insight into these relationships. Higher housing values are concentrated in areas such as central Philadelphia and Germantown/Chestnut Hill, where educational attainment is also higher. Conversely, North Philadelphia, which experiences higher poverty and vacancy rates, has lower housing values. While the correlation analysis suggests that multicollinearity is not a major concern, the spatial clustering of housing values raises potential issues of spatial autocorrelation, meaning that neighboring block groups might influence each other more than expected. Future analyses could incorporate spatial econometric techniques, such as Moran’s I, to assess these effects in more detail.
+
+**Extra Analyses and Model Robustness:**
+
+To validate our model, we performed stepwise regression using the Akaike Information Criterion (AIC) and conducted 5-fold cross-validation. The stepwise regression confirmed that the selected predictors contribute to a strong model fit, while the cross-validation results showed that the full model which includes all the four predictors performs better than a reduced model that only includes the percentage of vacant houses (PCTVACANT) and median household income. These results strengthen our confidence in the predictive power and robustness of the model.
+
+**Policy Implications: A Focus on Inclusive Growth and Stability:**
+
+The findings have important implications for urban policy, particularly in ensuring that strategies to improve housing markets do not lead to displacement or increased housing burdens for vulnerable communities. The strong negative impact of vacancy rates (PCTVACANT) on housing values suggests that reducing long-term vacancies could play a role in neighborhood stabilization. However, rather than policies that solely focus on increasing property values, interventions should prioritize equitable investment like rehabilitating vacant properties for affordable housing, expanding community land trusts, and offering support for longtime residents at risk of displacement.
+
+Similarly, the strong relationship between educational attainment (PCTBACHMOR) and housing values highlights the importance of expanding access to high-quality education and workforce development. However, increasing education levels alone does not ensure equitable housing outcomes if housing costs rise beyond affordability for existing residents. Thus, policies should be designed to balance educational investment with affordability measures, such as rental assistance programs and first-time homebuyer support for lower-income households.
+
+The negative association between poverty levels (LNNBELPOV100) and housing values highlights the need for housing policies that actively combat economic inequality and support affordable, stable communities. Solutions such as mixed-income housing developments, income-based tax credits, and expanded tenant protections can help ensure that economic mobility does not come at the cost of displacement. The goal should be to create stable, mixed-income communities where economic growth benefits both current residents and new arrivals.
+
+**Limitations and Future Research:**
+
+Although our model provides a strong understanding of housing market dynamics, there are several limitations that future research should address. First, while our model explains a significant portion of the variation in housing values, about one-third remains unexplained. This suggests that other factors like access to transportation, historical redlining patterns, or the presence of public amenities may play important roles and should be explored in future studies.
+
+Additionally, although applying log transformations helped normalize the data, these adjustments might not fully account for the large number of zeros in some predictors. Future research could investigate alternative methods that are better suited to handle such zero-heavy distributions.
+
+Lastly, the potential presence of spatial autocorrelation suggests that neighboring block groups may not be entirely independent, which could bias some estimates. Incorporating spatial econometric techniques, such as spatial lag models or geographically weighted regression, could improve the accuracy of future analyses.
+
+**Conclusion: Balancing Market Forces with Community Stability**
+
+Our study offers a detailed, data-driven analysis of the factors influencing housing values in Philadelphia. While the findings confirm that vacancy rates, educational attainment, and poverty levels all shape property values, the goal of urban policy should not simply be to increase housing values but to do so in a way that promotes stability, affordability, and long-term community resilience. By integrating targeted vacancy reduction efforts, expanding access to education, and implementing strong affordability measures, cities can create more equitable and inclusive housing markets that benefit all residents.
