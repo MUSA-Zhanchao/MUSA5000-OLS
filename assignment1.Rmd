@@ -780,10 +780,6 @@ The model’s overall quality is supported by an R² of approximately 0.66 and a
 
 Furthermore, 5-fold cross-validation, evaluated using root mean square error (RMSE), showed that the full model performs better than a reduced model that includes only the percentage of vacant houses (PCTVACANT) and median household income. These validation techniques reinforce our confidence in the robustness and predictive power of our model.
 
-## Possibility of Ridge or LASSO Regression
-
-Ridge and LASSO regression are used when there are highly correlated predictors or when only a subset of features is expected to be truly important. In such cases, some predictor coefficients may become excessively large, leading to overfitting in a linear model. These methods manage overfitting by adding a penalty term to the loss function, which constrains the coefficients. However, in our model, the highest correlation between predictors is 0.32, indicating no significant multicollinearity. Additionally, no predictor exhibits excessively large coefficients. Therefore, applying Ridge or LASSO regression in this case would be unnecessary.
-
 ## Limitations of the Model
 
 Despite the robust performance of our model, several limitations should be noted:
@@ -793,6 +789,11 @@ Despite the robust performance of our model, several limitations should be noted
 **Measurement of Poverty:** The variable representing households living below the poverty line (LNNBELPOV100) is used as a raw count rather than as a percentage. This choice may obscure relative differences in poverty levels across block groups and affect the interpretation of its impact on median house values.
 
 **Zero-Inflated Distributions:** Although the logarithmic transformation improved the normality of most variables, it may not fully address the zero-inflated nature of some predictors. Future studies could explore alternative transformation methods or models that are better suited for handling zero-heavy distributions.
+
+
+## Possibility of Ridge or LASSO Regression
+
+Ridge and LASSO regression are used when there are highly correlated predictors or when only a subset of features is expected to be truly important. In such cases, some predictor coefficients may become excessively large, leading to overfitting in a linear model. These methods manage overfitting by adding a penalty term to the loss function, which constrains the coefficients. However, in our model, the highest correlation between predictors is 0.32, indicating no significant multicollinearity. Additionally, no predictor exhibits excessively large coefficients. Therefore, applying Ridge or LASSO regression in this case would be unnecessary.
 
 ##Future Research and Policy Implications
 
