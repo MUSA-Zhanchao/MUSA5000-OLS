@@ -183,7 +183,7 @@ where **LNMEDHVAL** is the log-transformed median house value, **PCTVACANT** is 
 
 ### Regression Assumptions
 
-There are several assumptions associated with regression analysis that need to be met for the results to be valid. These assumptions including **linearity**, **independence of observations**, **homoscedasticity**, **normality of residuals**, **no multicollinearity**, and **no fewer than 10 observations per predictors**.
+For the results of the regression analysis to be valid, several key assumptions must be met. These assumptions include **linearity**, **independence of observations**, **homoscedasticity**, **normality of residuals**, **no multicollinearity**, and **no fewer than 10 observations per predictors**.
 
 First, **Linearity** assumes that the relationship between the dependent variable and the predictors is linear. To verify this assumption, we made scatter plots of the dependent variable against each predictor. If the relationship appears to be linear, the assumptions was met.
 
@@ -199,10 +199,10 @@ Finally, **No Fewer than 10 Observations per Predictor** assumes that there are 
 
 ### Parameter Estimations
 
-After verifing the assumptions of the regression, we start the regression analysis. Several parameters need to estimate here: 
+After verifing the assumptions of the regression, we start the regression analysis. We estimate the following parameters: 
 - \( \beta_0 \), which is the intercept
-- \( \beta_1, \dots, \beta_k \), which are coefficients of each independent variables
-- \( \sigma^2 \), the variance of the error terms, which represents the variability in the dependent variable that is not explained by the predictors.
+- \( \beta_1, \dots, \beta_k \), which are the coefficients of each independent variable
+- \( \sigma^2 \), the variance of the error terms, which quantifies the variability in the dependent variable that is not explained by the predictors.
 
 The least squares method estimates the coefficients by minimizing **the sum of squared errors (SSE)**, which is the sum of the squared differences between the observed values and the predicted values. The formula for SSE is:
 
@@ -237,7 +237,7 @@ $$
 
 ### Hypothesis Testing
 
-In this analysis. several hypothesis tests are conducted to determine the significance of the model and its predictors. The overall significance of the model is assessed using the **F-ratio**. It compares the variance explained by the model to the variance not explained by the model.A higher F-ratio indicates that the model explains a significant amount of variance in the dependent variable compared to the residual variance. 
+In this analysis, several hypothesis tests are conducted to determine the significance of the model and its predictors. The overall significance of the model is assessed using the **F-ratio**. It compares the variance explained by the model to the variance not explained by the model.A higher F-ratio indicates that the model explains a significant amount of variance in the dependent variable compared to the residual variance. 
 
 The null hypothesis and alternative hypothesis for the F-ratio are stated as follows:
 
@@ -797,7 +797,7 @@ In this study, we analyzed Philadelphia census block group data (n = 1,720) to e
 
 The model’s overall quality is supported by an R² of approximately 0.66 and a highly significant F-ratio, indicating a strong overall fit. Stepwise regression, guided by the Akaike Information Criterion, retained all four predictors (`PCTVACANT`, `PCTSINGLES`, `PCTBACHMOR`, and `LNNBELPOV100`), demonstrating that each variable contributes meaningfully to explaining the variation in the median house value. 
 
-Furthermore, 5-fold cross-validation, evaluated using root mean square error (RMSE), showed that the full model performs better than a reduced model that includes only the percentage of vacant houses (`PCTVACANT`) and median household income. These validation techniques reinforce our confidence in the robustness and predictive power of our model.
+Furthermore, 5-fold cross-validation, evaluated using root mean square error (RMSE), showed that the full model performs better than a reduced model that includes only the percentage of vacant houses (`PCTVACANT`) and median household income(`MEDHHINC`). These validation techniques reinforce our confidence in the robustness and predictive power of our model.
 
 ### Limitations of the Model
 
