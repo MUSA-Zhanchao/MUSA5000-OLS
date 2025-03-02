@@ -129,16 +129,16 @@ By comparing the **original histograms** with the **log-transformed histograms**
 
 ### Correlations
 
-We will analyze **correlations** between predictors, to detect potential **multicollinearity** before proceeding with regression analysis, which can distort model interpretations.  
+We will analyze the **correlations** between the predictors, to detect potential **multicollinearity** before proceeding with regression analysis, as it can distort model interpretations.  
 
-Multicollinearity occurs when predictors are highly correlated, which can lead to unstable regression coefficients. It also inflates standard errors, reducing the statistical significance of predictors, and increases the risk of overfitting, as redundant variables do not contribute new information to the model.  
+Multicollinearity occurs when predictors are highly correlated with one another, which can lead to unstable regression coefficients, inflated standard errors which reduce the statistical significance of predictors, and a higher risk of overfitting because redundant variables do not provide additional information to the model.  
 
-The **correlation coefficient** \(r\) is calculated as:  
+The **correlation coefficient** \(r\) quantifies the strength and direction of the linear relationship between two variables. It is calculated as:  
 
 $$
 r = \frac{\sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum_{i=1}^{n} (x_i - \bar{x})^2 \sum_{i=1}^{n} (y_i - \bar{y})^2}}
 $$
-In a more concise way, this above formula is also equivalent to the following: 
+In a more concise way, this formula can be expressed as: 
 
 $$
 r = \frac{1}{n-1} \sum_{i=1}^{n} \left( \frac{x_i - \bar{x}}{S_x} \right) \left( \frac{y_i - \bar{y}}{S_y} \right)
@@ -150,7 +150,7 @@ where:
 
 The correlation coefficient \(r\) ranges from **-1 to 1**: A value of +1 indicates a perfect positive linear relationship, while a value of -1 indicates a perfect negative linear relationship. A value of 0 suggests no linear relationship between the variables, meaning changes in one do not influence the other.
 
-## Multiple Regression
+## Multiple Regression Analysis
 After getting a general sense of the data, we conduct multiple regression analysis to examine the relationship between the dependent variable, **Median House Value (MEDHVAL)**, and the predictors, **education attainment (PCTBACHMOR)**, **number of Households Living in Poverty (NBELPOV100)**, **percentage of Vacant Houses (PCTVACANT)**, and **percentage of Single House Units (PCTSINGLES)**. Regression analysis is a statistical method to examine the relationship between a dependent variable and one or more predictors. With this type of analysis, researchers can identify the strength and direction of the relationship between variables, make predictions, and assess the significance of predictors. The model also estimates coefficients for each predictor, which represent the expected change in the dependent variable for a one-unit change in the predictor, holding other predictors constant. For this study, the multiple regression model is formulated as follows:
 $$
 \text{LNMEDHVAL} = \beta_0 + \beta_1 \text{PCTVACANT} + \beta_2 \text{PCTSINGLES} + \beta_3 \text{PCTBACHMOR} + \beta_4 \text{log(NBELPOV100)} + \epsilon
