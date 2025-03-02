@@ -52,7 +52,7 @@ In this study, we utilize ordinary least squares (OLS) regression to analyze the
 
 ## Data Cleaning
 
-To predict median house values in Philadelphia, we obtained the original dataset from the United States Census data. The dataset represents census block groups from the year 2000 and initially contained 1,816 observations. The key variables included:
+To predict median house values in Philadelphia, we obtained the original dataset from the United States Census data, which represents census block groups from the year 2000 and initially contained 1,816 observations. The key variables included:
 
 -  **POLY_ID** – Census Block Group ID
 -  **MEDHVAL** – Median value of all owner-occupied housing units
@@ -62,7 +62,7 @@ To predict median house values in Philadelphia, we obtained the original dataset
 -  **NBELPOV100** – Number of households with incomes below 100% of the poverty level
 -  **MEDHHINC** – Median household income
 
-To refine the dataset for modeling purposes, we applied the following filtering criteria:
+For modeling purposes, we refined the dataset using the following criteria:
 
 (1) Retained block groups with a population greater than 40
 (2) Included only block groups that contained housing units
