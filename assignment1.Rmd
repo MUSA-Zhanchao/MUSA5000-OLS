@@ -12,6 +12,9 @@ output:
     code_download: yes
     mathjax: default
 ---
+Keywords: Ordinary Least Square Regression, K-fold Cross Validation, Stepwise Regression
+
+GitHub Repository: [MUSA5000-OLS](https://github.com/zyang91/MUSA5000-OLS)
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -144,8 +147,9 @@ In a more concise way, this formula can be expressed as:
 $$
 r = \frac{1}{n-1} \sum_{i=1}^{n} \left( \frac{x_i - \bar{x}}{S_x} \right) \left( \frac{y_i - \bar{y}}{S_y} \right)
 $$
-where:  
-- \(X_i\) and \(Y_i\) are individual data points for variables \(X\) and \(Y\), respectively.  
+where: 
+
+- \(X_i\) and \(Y_i\) are individual data points for variables \(X\) and \(Y\), respectively. 
 - \(\bar{X}\) and \(\bar{Y}\) are the **mean values** of \(X\) and \(Y\).  
 - The numerator represents the **covariance** between \(X\) and \(Y\), while the denominator **normalizes** the values.  
 
@@ -518,7 +522,6 @@ predictor_vars <- data[, c("PCTVACANT", "PCTSINGLES", "PCTBACHMOR", "LNNBELPOV10
 
 cor_matrix <- cor(predictor_vars, use = "complete.obs", method = "pearson")
 
-print(cor_matrix)
 rownames(cor_matrix) <- names(custom_labels)
 colnames(cor_matrix) <- names(custom_labels)
 
@@ -528,7 +531,7 @@ ggcorrplot(cor_matrix,
            type = "lower",      
            lab = TRUE,       
            lab_size = 3,      
-           colors = c("#a4133c", "white", "#a4133c"))+
+           colors = c("grey", "white", "#a4133c"))+
     labs(title = "Correlation Matrix for all Predictor Variables") +
     theme(plot.subtitle = element_text(size = 9, face = "italic"),
         plot.title = element_text(size = 12, face = "bold"), 
