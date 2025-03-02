@@ -115,17 +115,17 @@ We will also examine the histograms and apply logarithmic transformations to key
 
 A **right-skewed** histogram suggests that a small number of observations have significantly higher values compared to the rest. For variables that exhibit **right-skewness**, a **log transformation** can improve normality. Since the **log transformation** is undefined for zero or negative values, we must first check whether any variable contains zero.
 
-- If **no zeros** presents, we apply the standard log transformation:  
+- If **no zeros** are present, we apply the standard log transformation:  
 $$
   X' = \log_{10} (X)
 $$  
-- If **zeros** present, we adjust by adding 1 before taking the log:  
+- If **zeros** are present, we add 1 to the variable before taking the log:  
 $$
   X' = \log_{10} (X + 1)
 $$  
   This ensures that all values remain positive and avoids undefined values.  
 
-By comparing the **original histograms** with the **log-transformed histograms**, we will assess whether the transformation improves the suitability of the data for predictive modeling.
+By comparing the **original histograms** with the **log-transformed histograms**, we will determine whether the transformation improves the suitability of the data for predictive modeling.
 
 ### Correlations
 
