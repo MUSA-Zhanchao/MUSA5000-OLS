@@ -75,9 +75,14 @@ After these cleaning steps, the final dataset contained 1,720 observations.
 ## Exploratory Data Anaylsis
 
 ### Summary Statistics
+<<<<<<< HEAD
+We will first examine the summary statistics ( **mean** and **standard deviation (SD)**) of key variables in the dataset, including the dependent variables **MEDHVAL** (Median House Value), and predictors **NBELPOV100** (Households Living in Poverty), **PCTBACHMOR** (% of Individuals with Bachelor’s Degrees or Higher), **PCTVACANT**(% of Vacant Houses), **PCTSINGLES**( % of Single House Units). 
+=======
 We will first examine the summary statistics ( **mean** and **standard deviation (SD)**) of key variables in the dataset. These include the dependent variable *MEDHVAL* (Median House Value), and the predictors *NBELPOV100* (Households Living in Poverty), *PCTBACHMOR* (% of Individuals with Bachelor’s Degrees or Higher), *PCTVACANT*(% of Vacant Houses), and *PCTSINGLES*( % of Single House Units). 
+>>>>>>> 81b3d276b1568fc6c6c132001266526bfc962637
 
  
+The **mean** (\(\bar{X}\)) represents the average value of a variable and is calculated as:  
 The **mean** (\(\bar{X}\)) represents the average value of a variable and is calculated as follows:  
 
 $$
@@ -89,6 +94,7 @@ where:
 - \(X_i\) represents each individual observation  
 - \(n\) is the total number of observations  
 
+The mean gives us a single representative value of the dataset. To measure variability, we use the **standard deviation (SD)**, which quantifies how much the values in a dataset deviate from the mean. The formula for the sample standard deviation (\(s\)) is:  
 The mean provides a single representative value of the dataset. To measure the variability of the data, we use the **standard deviation (SD)**, which quantifies how much the values in a dataset deviate from the mean. The formula for the sample standard deviation (\(s\)) is:  
 
 $$
@@ -101,43 +107,58 @@ where:
 - \(\bar{X}\) is the mean of the observations  
 - \(n\) is the total number of observations  
 
+A larger standard deviation indicates that the data points are more spread out, while a smaller standard deviation suggests that the data points are closer to the mean.  
+
 A larger standard deviation indicates that the data points are more spread out, while a smaller standard deviation suggests that the data points are more closely clustered around the mean.  
 
 ### Distributions 
 
+We will also examine the histograms and apply log transformations for key variables to assess whether the transformed variables follow a more normal-like distribution. 
 We will also examine the histograms and apply logarithmic transformations to key variables to assess whether the transformed variables exhibit a more normal-like distribution. 
 
+**Histograms** provide a visual representation of how a variable's values are distributed, helping to identify whether the data follows a **normal distribution**, is **right-skewed**, or **left-skewed**. Linear regression model assume that variables are approximately normally distributed.  
 **Histograms** provide a visual representation of how a variable's values are distributed, which helps identify whether the data follows a **normal distribution**, is **right-skewed**, or **left-skewed**. Note that linear regression models assume that variables are approximately normally distributed.
 
+- **X-axis:** The values of the variable (e.g., house prices, income levels). 
 - **X-axis:** Represents the values of the variable (e.g., house prices, income levels). 
 
+- **Y-axis:** The frequency of observations within each bin.  
 - **Y-axis:** Represents the frequency of observations within each bin.  
 
+If the histogram is **right-skewed**, it suggests that a small number of observations have significantly higher values compared to the rest. For variables following a **right-skewed distribution**, we will apply a **log transformation** to these variables to improve normality. Since the **log transformation** is undefined for zero or negative values, we must first check whether any variable contains zero.
 A **right-skewed** histogram suggests that a small number of observations have significantly higher values compared to the rest. For variables that exhibit **right-skewness**, a **log transformation** can improve normality. Since the **log transformation** is undefined for zero or negative values, we must first check whether any variable contains zero.
 
+- If **no zeros** presents, we apply the standard log transformation:  
 - If **no zeros** are present, we apply the standard log transformation:  
 $$
   X' = \log_{10} (X)
 $$  
+- If **zeros** present, we adjust by adding 1 before taking the log:  
 - If **zeros** are present, we add 1 to the variable before taking the log:  
 $$
   X' = \log_{10} (X + 1)
 $$  
   This ensures that all values remain positive and avoids undefined values.  
 
+By comparing the **original histograms** with the **log-transformed histograms**, we will assess whether the transformation improves the suitability of the data for predictive modeling.
+
 By comparing the **original histograms** with the **log-transformed histograms**, we will determine whether the transformation improves the suitability of the data for predictive modeling.
 
 ### Correlations
 
+We will analyze **correlations** between predictors, to detect potential **multicollinearity** before proceeding with regression analysis, which can distort model interpretations.  
 We will analyze the **correlations** between the predictors, to detect potential **multicollinearity** before proceeding with regression analysis, as it can distort model interpretations.  
 
+Multicollinearity occurs when predictors are highly correlated, which can lead to unstable regression coefficients. It also inflates standard errors, reducing the statistical significance of predictors, and increases the risk of overfitting, as redundant variables do not contribute new information to the model.  
 Multicollinearity occurs when predictors are highly correlated with one another, which can lead to unstable regression coefficients, inflated standard errors which reduce the statistical significance of predictors, and a higher risk of overfitting because redundant variables do not provide additional information to the model.  
 
+The **correlation coefficient** \(r\) is calculated as:  
 The **correlation coefficient** \(r\) quantifies the strength and direction of the linear relationship between two variables. It is calculated as:  
 
 $$
 r = \frac{\sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum_{i=1}^{n} (x_i - \bar{x})^2 \sum_{i=1}^{n} (y_i - \bar{y})^2}}
 $$
+In a more concise way, this above formula is also equivalent to the following: 
 In a more concise way, this formula can be expressed as: 
 
 $$
@@ -150,6 +171,7 @@ where:
 
 The correlation coefficient \(r\) ranges from **-1 to 1**: A value of +1 indicates a perfect positive linear relationship, while a value of -1 indicates a perfect negative linear relationship. A value of 0 suggests no linear relationship between the variables, meaning changes in one do not influence the other.
 
+## Multiple Regression
 ## Multiple Regression Analysis
 
 After obtaining a general understanding of the data, we conduct multiple regression analysis to examine the relationship between the dependent variable, **Median House Value (MEDHVAL)**, and the predictors: **education attainment (PCTBACHMOR)**, **number of Households Living in Poverty (NBELPOV100)**, **percentage of Vacant Houses (PCTVACANT)**, and **percentage of Single House Units (PCTSINGLES)**. Regression analysis is a statistical method used to examine the relationship between a dependent variable and one or more predictors. With this type of analysis, researchers can identify the strength and direction of the relationship between variables, make predictions, and assess the significance of predictors. The model also estimates coefficients for each predictor, which represent the expected change in the dependent variable for a one-unit change in the predictor, holding other predictors constant. For this study, the multiple regression model is formulated as follows:
@@ -199,7 +221,7 @@ where \(n\) is the number of observations and \(k\) is the number of predictors 
 
 ### Model Evaluation
 
-We evaluated the model's fitness using the coefficient of determination \(R^2\) and the adjusted \(R^2\). The coefficient of determination \(R^2\) measures the proportion of variance in the dependent variable that is explained by the predictors. The adjusted \(R^2\) adjusts the \(R^2\) value based on the number of predictors, which help to provide a more accurate measure of model fit for multiple regression, as the increase the number of predictors can artificially inflate the \(R^2\) value.
+We evaluated the model's fitness using **the coefficient of determination** \(R^2\) and **the adjusted** \(R^2\). The coefficient of determination \(R^2\) measures the proportion of variance in the dependent variable that is explained by the predictors. The adjusted \(R^2\) adjusts the \(R^2\) value based on the number of predictors, which help to provide a more accurate measure of model fit for multiple regression, as the increase the number of predictors can artificially inflate the \(R^2\) value.
 
 To obtain \(R^2\), \(SST\) or the total sum of squares, needed to be calculated first. The \(SST\) measures the total variance in the dependent variable, given by:
 $$
@@ -216,7 +238,7 @@ $$
 
 ### Hypothesis Testing
 
-In this analysis. several hypothesis tests are conducted to determine the significance of the model and its predictors. The overall significance of the model is assessed using the F-ratio. It compares the variance explained by the model to the variance not explained by the model.A higher F-ratio indicates that the model explains a significant amount of variance in the dependent variable compared to the residual variance. 
+In this analysis. several hypothesis tests are conducted to determine the significance of the model and its predictors. The overall significance of the model is assessed using the **F-ratio**. It compares the variance explained by the model to the variance not explained by the model.A higher F-ratio indicates that the model explains a significant amount of variance in the dependent variable compared to the residual variance. 
 
 The null hypothesis and alternative hypothesis for the F-ratio are stated as follows:
 
@@ -230,7 +252,7 @@ The null hypothesis and alternative hypothesis for the F-ratio are stated as fol
   H_a: \text{At least one } \beta_i \neq 0
   $$
 
-We also conduct a t-test to determine the significance of each individual predictor in the model:
+We also conduct a **t-test** to determine the significance of each individual predictor in the model:
 
 - The **null hypothesis \(H_{0i}\)** states that the coefficient for the predictor i is equal to zero, meaning that the predictor does not explain the variance in the dependent variable (median house value). Stated as:
 
@@ -248,15 +270,15 @@ We also conduct a t-test to determine the significance of each individual predic
 
 ### Stepwise Regression
 
-In addition to the multiple regression analysis, we conduct stepwise regression analysis to identify the most significant predictors of median house values in Philadelphia. Stepwise regression is a method that automatically selects the best subset of predictors for the model. It involves adding or removing predictors based on their statistical significance (P-value) and the AIC (Akaike Information Criterion). The stepwise regression analysis will help us identify the most important predictors and improve the overall model fits.
+In addition to the multiple regression analysis, we conduct stepwise regression analysis to identify the most significant predictors of median house values in Philadelphia. Stepwise regression is a method that automatically selects the best subset of predictors for the model. **It involves adding or removing predictors based on their statistical significance (P-value) and the AIC (Akaike Information Criterion).** The stepwise regression analysis will help us identify the most important predictors and improve the overall model fits.
 
 However, there are several limitations to stepwise regression. First, the final stepwise regression model is not guaranteed to be optimal in any specific sense. There may be other models that are as good as, or even better than the one selected by stepwise regression, but the procedure only yeilds a single model. Second, the stepwise regression does take into account researchers' knowledge about the predictors. Important variables may be exclude from the model if they are not included in the initially. Moreover, This method also runs the risk of Type I and Type II errors—meaning it may include unimportant variables or exclude important ones. 
 
 ### Cross-Validation
 
-To evaluate the performance of the regression model, we conduct K-fold cross-validation. Cross-validation is a technique used to evluate the performance of the predictive models. In K-fold Cross-Validation, the dataset is randomly divided into K equal-sized folds. The model is trained on K-1 folds and tested on the remaining fold. This process is repeated K times, with each fold serving as the test set exactly once. The average performance across all K folds is then calculated. Cross-validation helps to assess the model's generalization performance and reduce the risk of overfitting.
+To evaluate the performance of the regression model, we conduct **K-fold cross-validation**. Cross-validation is a technique used to evluate the performance of the predictive models. In K-fold Cross-Validation, the dataset is randomly divided into K equal-sized folds. The model is trained on K-1 folds and tested on the remaining fold. This process is repeated K times, with each fold serving as the test set exactly once. The average performance across all K folds is then calculated. Cross-validation helps to assess the model's generalization performance and reduce the risk of overfitting.
 
-In our analysis, we used K=5, which is a common choice for cross-validation. The root mean squared error (RMSE) is used to compare the performance of different models. The RMSE measures the difference between the predicted values and the actual values. A lower value of RMSE indicates a better predictive model.
+**In our analysis, we used K=5, which is a common choice for cross-validation.** The root mean squared error (RMSE) is used to compare the performance of different models. The RMSE measures the difference between the predicted values and the actual values. A lower value of RMSE indicates a better predictive model.
 
 The mean square errors is calculated as follows:
 $$ 
@@ -284,7 +306,7 @@ In this analysis, we utilize the R programming language, a professional statisti
 
 ## Exploratory Results 
 
-The table below presents the summary statistics for the key variables, an overview of the central tendency and variability. The dependent variable *median house value* has a mean of 66,287.73, indicating that the average median house value by census tract in Philadelphia is approximately 66,287.73 dollar. The standard deviation of 60,006.08 dollar suggests that house values exhibit significant variability across census tracts.
+The table below presents the summary statistics for the key variables, an overview of the central tendency and variability. The dependent variable **median house value** has a **mean** of 66,287.73, indicating that the average median house value by census tract in Philadelphia is approximately 66,287.73 dollar. The **standard deviation** of 60,006.08 dollar suggests that house values exhibit significant variability across census tracts.
 
 For the predictor variables, all have standard deviations close to or greater than the mean, indicating large differences in educational attainment, economic status, housing occupancy, and housing structure composition across Philadelphia's census block groups.
 
@@ -344,7 +366,7 @@ kable(summary_stats, caption = "Summary Statistics",
 
 ### Histogram Distribution
 
-One of the assumptions of OLS regression is that variables follow a normal distribution. To assess the distribution of key variables, their histograms are presented below. As seen in the plots, all key variables exhibit left-skewness, meaning their distributions are right-skewed (positively skewed), with a concentration of smaller values and a long right tail.
+One of the assumptions of OLS regression is that variables follow a normal distribution. To assess the distribution of key variables, their histograms are presented below. As seen in the plots, all key variables exhibit left-skewness, meaning their distributions are **right-skewed** (positively skewed), with a concentration of smaller values and a long right tail.
 
 ```{r, include=FALSE}
 #check 0
@@ -380,7 +402,7 @@ ggplot(longer_version,aes(x = Value)) +
         axis.title=element_text(size=8))
 ```
 
-To meet the normality assumption of OLS, log transformation is applied where necessary to improve distributional symmetry. This transformation helps normalize the distributions, making them more suitable for regression analysis. The histograms of the log-transformed variables indicate a more normal-like distribution. However, some slight skewness remains: the dependent variable (*Log Median House Value*) and the predictor (*Log % Single House Value*) are slightly left-skewed, while the predictors *Log % Households in Poverty* and *Log % Vacant Houses* are slightly right-skewed.
+To meet the normality assumption of OLS, log transformation is applied where necessary to improve distributional symmetry. This transformation helps normalize the distributions, making them more suitable for regression analysis. The histograms of the log-transformed variables indicate a more normal-like distribution. However, some slight skewness remains: the dependent variable (**Log Median House Value**) and the predictor (**Log % Single House Value**) are slightly **left-skewed**, while the predictors **Log % Households in Poverty** and **Log % Vacant Houses** are slightly **right-skewed**.
 ```{r}
 data <- data %>%
   mutate(
@@ -423,8 +445,7 @@ Other regression assumptions will be assessed separately in the Regression Assum
 
 Linearity assumes that the relationship between the dependent variable and the predictors is linear. To examine this relationship, we analyze the spatial distribution of key variables. Certain predictor maps exhibit patterns similar to the dependent variable, suggesting a strong potential relationship.
 
-Below is the choropleth map of the dependent variable, *Log Transformed Median House Value*. It reveals that central city areas and Germantown/Chestnut Hill have higher median house values, while North Philadelphia has lower values.  
-
+Below is the choropleth map of the dependent variable, **Log Transformed Median House Value**. It reveals that central city areas and Germantown/Chestnut Hill have higher median house values, while North Philadelphia has lower values.  
 
 ```{r,fig.height=7, fig.width=9,warning=FALSE, message=FALSE}
 ggplot(shape) +
@@ -494,13 +515,13 @@ combined_plot <- (plot_list[[1]] + plot_list[[2]]) /
 combined_plot
 ```
 
-These maps also help identify whether predictors are closely related to each other, which could cause multicollinearity problems. The *Percent of Bachelor's Degree or Higher* map looks very similar to the *Log Transformed Median House Value* map, suggesting that areas with more college graduates tend to have higher house values. Also, the *Percent of Vacant Houses* and *Percent of Single House Units* maps share a similar pattern—North Philadelphia and University City have a high percentage of vacant houses and a low percentage of single-house units, while Germantown/Chestnut Hill and Far Northeast Philadelphia show the opposite trend. This suggests that these two predictors may be strongly related, which could lead to multicollinearity issues in the regression analysis.
+These maps also help identify whether predictors are closely related to each other, which could cause **multicollinearity** problems. The **Percent of Bachelor's Degree or Higher**(`PCTBACHMOR`) map looks very similar to the **Log Transformed Median House Value**(`LNMEDHVAL`) map, suggesting that areas with more college graduates tend to have higher house values. Also, the **Percent of Vacant Houses**(`PCTVACANT`) and **Percent of Single House Units**(`PCTSINGLES`) maps share a similar pattern—North Philadelphia and University City have a high percentage of vacant houses and a low percentage of single-house units, while Germantown/Chestnut Hill and Far Northeast Philadelphia show the opposite trend. This suggests that these two predictors may be strongly related, which could lead to multicollinearity issues in the regression analysis.
 
 ### Examining Multicollinearity & Correlation Matrix
 
-To further examine multicollinearity, we create a correlation matrix between predictors. All correlation values are below 0.7, indicating that no severe multicollinearity occurs in our model.  
+To further examine multicollinearity, we create a correlation matrix between predictors. *All correlation values are below 0.7, indicating that no severe multicollinearity occurs in our model.*  
 
-Among them, **% of Single House Units** and **Logged Households Living in Poverty** have a correlation of -0.32, suggesting some relationship but not strong enough to cause severe multicollinearity. Looking back at the choropleth maps of these two predictors, their spatial patterns are not similar. **% of Single House Units** and **% of Individuals with a Bachelor's Degree or Higher** have a correlation of -0.3, again indicating some relationship without severe multicollinearity. The choropleth maps of these two predictors also do not exhibit similar spatial patterns. Additionally, while the choropleth maps of **Percent of Vacant Houses** and **Percent of Single House Units** share a similar pattern, as mentioned before, their correlation value is only 0.2, suggesting a weak relationship without multicollinearity.  
+Among them, **% of Single House Units**(`PCTSINGLES`) and **Logged Households Living in Poverty**(`LNNBELPOV100`) have a correlation of -0.32, suggesting some relationship but not strong enough to cause severe multicollinearity. Looking back at the choropleth maps of these two predictors, their spatial patterns are not similar. **% of Single House Units**(`PCTSINGLES`) and **% of Individuals with a Bachelor's Degree or Higher**(`PCTBACHMOR`) have a correlation of -0.3, again indicating some relationship without severe multicollinearity. The choropleth maps of these two predictors also do not exhibit similar spatial patterns. Additionally, while the choropleth maps of **Percent of Vacant Houses**(`PCTVACANT`) and **Percent of Single House Units**(`PCTSINGLES`) share a similar pattern, as mentioned before, their correlation value is only 0.2, suggesting a weak relationship without multicollinearity.  
 
 There is no severe multicollinearity among the predictors, supporting the assumptions of OLS regression. However, if the correlation matrix had shown high correlations (\\(|r| \geq 0.7\\)), we could further confirm the severity of multicollinearity using the **Variance Inflation Factor (VIF)** (**VIF < 5** indicates low multicollinearity and is generally acceptable, while **VIF \(\geq\) 5** suggests moderate to high multicollinearity that may require attention. If **VIF \(\geq\) 10**, severe multicollinearity is present, necessitating corrective measures).  
 
@@ -580,12 +601,13 @@ anova_table <- anova(fit)
 anova_table
 ```
 
-The Analysis of Variance (ANOVA) table shows additional insight into the significance of each predictor in explaining the variation in the dependent variable (`LNVMEDHVAL`). For proportion of vacant housing units (`PCTVACANT`), the sum of squares is 180.392, indicating that those amount of variation in `LNVMEDHVAL` that can be attributed to changes in `PCTVACANT`. A higher sum of squares indicates a mhigher relationship between the predictor and the dependent variable. The sum of squares for the percentage of residents with a bachelor's degree or higher (`PCTBACHMOR`) explains the highest portion of the variance in `LNVMEDHVAL`. In contrast, the sum of squares for the log-transformed number of households living below the poverty line (`LNNBELPOV100`) explains the least amount of variance in `LNVMEDHVAL`, with only 11.69. 
+**The Analysis of Variance (ANOVA)** table shows additional insight into the significance of each predictor in explaining the variation in the dependent variable (`LNVMEDHVAL`). For proportion of vacant housing units (`PCTVACANT`), the sum of squares is 180.392, indicating that those amount of variation in `LNVMEDHVAL` that can be attributed to changes in `PCTVACANT`. A higher sum of squares indicates a mhigher relationship between the predictor and the dependent variable. The sum of squares for the percentage of residents with a bachelor's degree or higher (`PCTBACHMOR`) explains the highest portion of the variance in `LNVMEDHVAL`. In contrast, the sum of squares for the log-transformed number of households living below the poverty line (`LNNBELPOV100`) explains the least amount of variance in `LNVMEDHVAL`, with only 11.69. 
 
 The total sum of squares, which represents the total variance in the dependent variable (`LNVMEDHVAL`), is 230.34, with a mean square error of 0.134. Overall, the ANOVA table provides a comprehensive overview of the significance of each predictor in the model and the proportion of variance explained by each predictor. It confirms that all four predictors contribute significantly to explaining the variance in the dependent variable. These findings provide strong evidence of the robustness of the model and the relevance of neighbourhood characteristics in predicting housing values.
 
 
 ## Regression Assumptions Check
+
 
 In this section, we conducted variety of analysis to check if the assumption of the linear regression were met. In the earlier section, we already checked the variable distribution and multicollinearity. Here, we will check following assumption:
 
@@ -597,7 +619,7 @@ In this section, we conducted variety of analysis to check if the assumption of 
 
 ### Linearity
 
-To further examine the linear relationship between the dependent variable and the predictors, we create four scatter plots, where the x-axis represents each predictor and the y-axis represents the dependent variable, *Log Transformed Median House Value*. 
+To further examine the linear relationship between the dependent variable and the predictors, we create four scatter plots, where the **x-axis** represents each predictor and the **y-axis** represents the dependent variable, **Log Transformed Median House Value**. 
 
 ```{r fig.height=7, fig.width=9, warning=FALSE, message=FALSE}
 longer<-data %>%
@@ -635,7 +657,7 @@ From the plots, we observe the following trends:
 
 - **% of Vacant Houses** has a general negative linear relationship with the dependent variable. As the percentage of vacant houses increases, the *Log Transformed Median House Value* decreases, with a correlation coefficient \\(< 0\\). However, in the graph, it reveals a more complex relationship with significant variation in housing values across different vacancy rates. There are clusters of block groups with high housing values and low vacancy rates, indicating that the relationship is not strictly linear.In the middle and lower ranges of vacancy rates, the decline in housing values becomes less pronounced. This suggests that while vacant housing is associated with lower property values, the impact diminishes or becomes less predictable as the vacancy rate changes.  
 
-In summary, the scatterplot shows that while the PCTBACHMOR and LNMEDHVAL have a clear linear relationship, the other predictors have more complex non-linear relationships with the dependent variable. This suggests that the linear regression model may not fully capture the complexity of the relationships between the predictors and median house values.
+In summary, the scatterplot shows that while the (`PCTBACHMOR`) and (`LNMEDHVAL`) have a clear linear relationship, the other predictors have more complex non-linear relationships with the dependent variable. This suggests that the linear regression model may not fully capture the complexity of the relationships between the predictors and median house values.
 
 
 ### Normality of Residuals
@@ -667,7 +689,7 @@ ggplot(data, aes(x = Standardized_Residuals)) +
         axis.title=element_text(size=8))
 ```
 
-This graph indicate a general normal distribution of the residuals, with a bell shape curve centered around 0. The majority of the residuals are concentrated between -2 and 2 on the x-axis, with the highest frequency around 0. This concentration suggests that most of the predicted values are close to the actual values, leading to residuals that are small and symmetrically distributed around 0. This generally met the assumption of the normality of residuals in OLS regression.
+This graph indicate a general normal distribution of the residuals, with a bell shape curve centered around 0. The majority of the residuals are concentrated between -2 and 2 on the x-axis, with the highest frequency around 0. This concentration suggests that most of the predicted values are close to the actual values, leading to residuals that are small and symmetrically distributed around 0. **This generally met the assumption of the normality of residuals in OLS regression.**
 
 However, there are still some noticeable deviations from perfect normality at the tails of the distribution. On the left side, there are few residuals with values smaller than -3, and on the right side, there are few residuals with values larger than 3. These outliers indicate that the model may not be capturing all the variability in the dependent variable, leading to some large residuals. While the majority of the residuals are normally distributed, these outliers suggest that the model may not be fully capturing the complexity of the relationship between the predictors and the dependent variable. Further examination of those specific data points may be necessary to understand the reasons for these large residuals.
 
@@ -692,17 +714,17 @@ ggplot(data, aes(x = Fitted, y = Standardized_Residuals)) +
         axis.text.y=element_text(size=6), 
         axis.title=element_text(size=8))
 ```
-The scatterplot show no clear pattern in the residuals, as the predicted values rising or falling. Instead, they seem to be pretty randomly distributed around the 0 line, indicating that the residuals have constant variance across all levels of the fitted values.There is no obvious funnel shpe or systematic variation trend suggests that the assumption of homoscedasticity is satisfied. In addition, the residuals are generally symmetrical distributed around the 0 line,which indicate the model does not systemically over- or under-predicted the dependent variable over the range of fitted values.
+The scatterplot show **no clear pattern in the residuals**, as the predicted values rising or falling. Instead, they seem to be pretty randomly distributed around the 0 line, indicating that the residuals have constant variance across all levels of the fitted values.There is no obvious funnel shape or systematic variation trend suggests that the assumption of homoscedasticity is satisfied. In addition, the residuals are generally symmetrical distributed around the 0 line,which indicate the model does not systemically over- or under-predicted the dependent variable over the range of fitted values.
 
 However, the plot does show some potential outliers, particularly those points are outside -3 and 3 standardized residuals. These extreme residuals are located upper or lower of the main residual clusters and may indicate that the model's predicted values deviate significantly from the actual values. Although the number of residuals is relative small, their presence indicates that the model may not fit all data well.
 
 ### Independence of Observations
 
-Then, we test the independence of observations, specifically examining spatial autocorrelation. The choropleth map of the Percentage of *Percent of Bachelor’s Degree or Higher* shows that central city areas and Germantown/Chestnut Hill have higher median house values, while North Philadelphia has lower values. This clustering suggests potential spatial dependence among block groups. Similarly, the dependent variable, *Log Transformed Median House Value*, follows the same pattern, further indicating that observations may not be spatially independent.
+Then, we test the independence of observations, specifically examining spatial autocorrelation. The choropleth map of the Percentage of **Percent of Bachelor’s Degree or Higher** shows that central city areas and Germantown/Chestnut Hill have higher median house values, while North Philadelphia has lower values. This clustering suggests potential spatial dependence among block groups. Similarly, the dependent variable, **Log Transformed Median House Value**, follows the same pattern, further indicating that observations may not be spatially independent.
 
 ### Independence of Residuals
 
-The final assumption we test is the independence of residuals, which we assess by analyzing the choropleth map of regression residuals. The map reveals that residuals tend to be systematically low in the center of Philadelphia and higher in surrounding block groups, suggesting spatial autocorrelation. This pattern indicates that residuals are not randomly distributed, meaning the current regression model may not fully capture spatial heterogeneity. As a result, further examination of spatial autocorrelation in both the variables and residuals is necessary, and a spatial regression model may be required. 
+The final assumption we test is the independence of residuals, which we assess by analyzing the choropleth map of regression residuals. The map reveals that residuals tend to be systematically low in the center of Philadelphia and higher in surrounding block groups, suggesting spatial autocorrelation. **This pattern indicates that residuals are not randomly distributed, meaning the current regression model may not fully capture spatial heterogeneity.** As a result, further examination of spatial autocorrelation in both the variables and residuals is necessary, and a spatial regression model may be required. 
 
 
 ```{r, fig.height=7, fig.width=9, warning=FALSE, message=FALSE}
@@ -730,7 +752,6 @@ ggplot(shape)+
         panel.border = element_rect(colour = "grey", fill = NA, size = 0.8))
 
 ```
-
 
 
 
@@ -771,29 +792,29 @@ The original model with all four predictors had a root mean squared error (RMSE)
 
 # Discussion and Limitations
 
-In this study, we analyzed Philadelphia census block group data (n = 1,720) to examine how neighborhood characteristics relate to median house values. To address non-normality, we applied a logarithmic transformation to the median house value, which allows us to interpret the regression coefficients as approximate percentage changes in the median house value. Our regression analysis revealed that for every 1-percentage point increase in the percentage of vacant houses (PCTVACANT), the median house value decreases by approximately 1.915%. Similarly, a 1-percentage point increase in the percentage of single-family homes (PCTSINGLES) is associated with a roughly 0.298% increase in the median house value, while a 1-percentage point increase in the percentage of residents with at least a bachelor’s degree (PCTBACHMOR) corresponds to about a 2.09% increase. In contrast, every 1-percentage point increase in the log-transformed number of households living below the poverty line (LNNBELPOV100) is linked with approximately a 0.078% decrease in the median house value. Overall, our model explains about 66% of the variation in the dependent variable, indicating that the selected predictors significantly influence median house values. While most results were in line with expectations, the relatively small impact of the percentage of single-family homes (PCTSINGLES) was somewhat surprising.
+In this study, we analyzed Philadelphia census block group data (n = 1,720) to examine how neighborhood characteristics relate to median house values. To address non-normality, we applied a logarithmic transformation to the median house value, which allows us to interpret the regression coefficients as approximate percentage changes in the median house value. Our regression analysis revealed that for every 1-percentage point increase in the percentage of vacant houses (`PCTVACANT`), the median house value decreases by approximately 1.915%. Similarly, a 1-percentage point increase in the percentage of single-family homes (`PCTSINGLES`) is associated with a roughly 0.298% increase in the median house value, while a 1-percentage point increase in the percentage of residents with at least a bachelor’s degree (`PCTBACHMOR`) corresponds to about a 2.09% increase. In contrast, every 1-percentage point increase in the log-transformed number of households living below the poverty line (`LNNBELPOV100`) is linked with approximately a 0.078% decrease in the median house value. Overall, our model explains about 66% of the variation in the dependent variable, indicating that the selected predictors significantly influence median house values. While most results were in line with expectations, the relatively small impact of the percentage of single-family homes (`PCTSINGLES`) was somewhat surprising.
 
-## Model Quality and Additional Analyses
+### Model Quality and Additional Analyses
 
-The model’s overall quality is supported by an R² of approximately 0.66 and a highly significant F-ratio, indicating a strong overall fit. Stepwise regression, guided by the Akaike Information Criterion, retained all four predictors (PCTVACANT, PCTSINGLES, PCTBACHMOR, and LNNBELPOV100), demonstrating that each variable contributes meaningfully to explaining the variation in the median house value. 
+The model’s overall quality is supported by an R² of approximately 0.66 and a highly significant F-ratio, indicating a strong overall fit. Stepwise regression, guided by the Akaike Information Criterion, retained all four predictors (`PCTVACANT`, `PCTSINGLES`, `PCTBACHMOR`, and `LNNBELPOV100`), demonstrating that each variable contributes meaningfully to explaining the variation in the median house value. 
 
-Furthermore, 5-fold cross-validation, evaluated using root mean square error (RMSE), showed that the full model performs better than a reduced model that includes only the percentage of vacant houses (PCTVACANT) and median household income. These validation techniques reinforce our confidence in the robustness and predictive power of our model.
+Furthermore, 5-fold cross-validation, evaluated using root mean square error (RMSE), showed that the full model performs better than a reduced model that includes only the percentage of vacant houses (`PCTVACANT`) and median household income. These validation techniques reinforce our confidence in the robustness and predictive power of our model.
 
-## Limitations of the Model
+### Limitations of the Model
 
 Despite the robust performance of our model, several limitations should be noted:
 
 **Spatial Autocorrelation:** Choropleth maps indicate that median house values and some predictors display spatial clustering. This suggests that neighboring census block groups may influence one another, potentially biasing our parameter estimates. Future research should incorporate spatial econometric techniques, such as Moran’s I or spatial lag models, to address this issue.
 
-**Measurement of Poverty:** The variable representing households living below the poverty line (LNNBELPOV100) is used as a raw count rather than as a percentage. This choice may obscure relative differences in poverty levels across block groups and affect the interpretation of its impact on median house values.
+**Measurement of Poverty:** The variable representing households living below the poverty line (`LNNBELPOV100`) is used as a raw count rather than as a percentage. This choice may obscure relative differences in poverty levels across block groups and affect the interpretation of its impact on median house values.
 
 **Zero-Inflated Distributions:** Although the logarithmic transformation improved the normality of most variables, it may not fully address the zero-inflated nature of some predictors. Future studies could explore alternative transformation methods or models that are better suited for handling zero-heavy distributions.
 
 
-## Possibility of Ridge or LASSO Regression
+### Possibility of Ridge or LASSO Regression
 
 Ridge and LASSO regression are used when there are highly correlated predictors or when only a subset of features is expected to be truly important. In such cases, some predictor coefficients may become excessively large, leading to overfitting in a linear model. These methods manage overfitting by adding a penalty term to the loss function, which constrains the coefficients. However, in our model, the highest correlation between predictors is 0.32, indicating no significant multicollinearity. Additionally, no predictor exhibits excessively large coefficients. Therefore, applying Ridge or LASSO regression in this case would be unnecessary.
 
-##Future Research and Policy Implications
+### Future Research and Policy Implications
 
-Our findings have significant implications for urban policy aimed at promoting community stability and equitable growth. The strong negative effect of higher vacancy rates (PCTVACANT) on median house values suggests that policies focused on rehabilitating vacant properties or supporting community-based investments could help stabilize neighborhoods without displacing existing residents. Similarly, the positive association between educational attainment (PCTBACHMOR) and median house values highlights the importance of policies that enhance educational opportunities while also ensuring affordable housing for long-term residents. Future research should consider incorporating additional predictors, such as access to public amenities, quality of local services, or historical neighborhood trends, and should employ spatial econometric techniques to capture spatial dependencies more accurately. Although our current analysis does not warrant the use of Ridge or LASSO regression, these methods might be revisited in future studies if the dataset expands or if additional predictors are included.
+Our findings have significant implications for urban policy aimed at promoting community stability and equitable growth. The strong negative effect of higher vacancy rates (`PCTVACANT`) on median house values suggests that policies focused on rehabilitating vacant properties or supporting community-based investments could help stabilize neighborhoods without displacing existing residents. Similarly, the positive association between educational attainment (`PCTBACHMOR`) and median house values highlights the importance of policies that enhance educational opportunities while also ensuring affordable housing for long-term residents. Future research should consider incorporating additional predictors, such as access to public amenities, quality of local services, or historical neighborhood trends, and should employ spatial econometric techniques to capture spatial dependencies more accurately. Although our current analysis does not warrant the use of Ridge or LASSO regression, these methods might be revisited in future studies if the dataset expands or if additional predictors are included.
