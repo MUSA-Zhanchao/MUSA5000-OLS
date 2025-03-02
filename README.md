@@ -4,6 +4,8 @@ This assignment asks you to examine the relationship between median house values
 
 ## REPORT OUTLINE
 
+**Please refer to HW1 Instructions and Outline**
+
 A successful report will address the points presented in this outline. You are strongly encouraged to use the outline as a backbone for your report. 
 
 Note that this outline separates the Methods and Results sections. If you prefer to combine them, that is certainly fine as well – however, be sure to address every point in this outline. 
