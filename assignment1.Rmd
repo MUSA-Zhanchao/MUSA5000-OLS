@@ -75,7 +75,7 @@ After these cleaning steps, the final dataset contained 1,720 observations.
 ## Exploratory Data Anaylsis
 
 ### Summary Statistics
-We will first examine the summary statistics ( **mean** and **standard deviation (SD)**) of key variables in the dataset, including the dependent variables *MEDHVAL* (Median House Value), and predictors *NBELPOV100* (Households Living in Poverty), *PCTBACHMOR* (% of Individuals with Bachelor’s Degrees or Higher), *PCTVACANT*(% of Vacant Houses), *PCTSINGLES*( % of Single House Units). 
+We will first examine the summary statistics ( **mean** and **standard deviation (SD)**) of key variables in the dataset. These include the dependent variable *MEDHVAL* (Median House Value), and the predictors *NBELPOV100* (Households Living in Poverty), *PCTBACHMOR* (% of Individuals with Bachelor’s Degrees or Higher), *PCTVACANT*(% of Vacant Houses), and *PCTSINGLES*( % of Single House Units). 
 
  
 The **mean** (\(\bar{X}\)) represents the average value of a variable and is calculated as:  
