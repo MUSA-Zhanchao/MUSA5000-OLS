@@ -756,6 +756,10 @@ The choropleth maps provide further spatial insight into these relationships. Hi
 
 To validate our model, we performed stepwise regression using the Akaike Information Criterion (AIC) and conducted 5-fold cross-validation. The stepwise regression confirmed that the selected predictors contribute to a strong model fit, while the cross-validation results showed that the full model which includes all the four predictors performs better than a reduced model that only includes the percentage of vacant houses (PCTVACANT) and median household income. These results strengthen our confidence in the predictive power and robustness of the model.
 
+**Ridge or LASSO regression:**
+
+Ridge and LASSO regression are used when there are highly correlated predictors or when only a subset of features is expected to be truly important. In such cases, some predictor coefficients may become excessively large, leading to overfitting in a linear model. These methods manage overfitting by adding a penalty term to the loss function, which constrains the coefficients. However, in our model, the highest correlation between predictors is 0.32, indicating no significant multicollinearity. Additionally, no predictor exhibits excessively large coefficients. Therefore, applying Ridge or LASSO regression in this case would be unnecessary.
+
 **Policy Implications: A Focus on Inclusive Growth and Stability:**
 
 The findings have important implications for urban policy, particularly in ensuring that strategies to improve housing markets do not lead to displacement or increased housing burdens for vulnerable communities. The strong negative impact of vacancy rates (PCTVACANT) on housing values suggests that reducing long-term vacancies could play a role in neighborhood stabilization. However, rather than policies that solely focus on increasing property values, interventions should prioritize equitable investment like rehabilitating vacant properties for affordable housing, expanding community land trusts, and offering support for longtime residents at risk of displacement.
