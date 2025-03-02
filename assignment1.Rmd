@@ -592,7 +592,8 @@ In this section, we conducted variety of analysis to check if the assumption of 
 - Linearity
 - Normality of Residuals
 - Homoscedasticity
-- Independence of Observations without time and space autocorrelation
+- Independence of Observations without space autocorrelation
+- Independence of Residuals without space autocorrelation
 
 ### Linearity
 
@@ -697,7 +698,11 @@ However, the plot does show some potential outliers, particularly those points a
 
 ### Independence of Observations
 
-The last assumption we test here is the independence of observations. In our case, we are particularly interested in checking for spatial autocorrelation, which occurs when the residuals are correlated in space. 
+Then, we test the independence of observations, specifically examining spatial autocorrelation. The choropleth map of the Percentage of *Percent of Bachelor’s Degree or Higher* shows that central city areas and Germantown/Chestnut Hill have higher median house values, while North Philadelphia has lower values. This clustering suggests potential spatial dependence among block groups. Similarly, the dependent variable, *Log Transformed Median House Value*, follows the same pattern, further indicating that observations may not be spatially independent.
+
+### Independence of Residuals
+
+The final assumption we test is the independence of residuals, which we assess by analyzing the choropleth map of regression residuals. The map reveals that residuals tend to be systematically low in the center of Philadelphia and higher in surrounding block groups, suggesting spatial autocorrelation. This pattern indicates that residuals are not randomly distributed, meaning the current regression model may not fully capture spatial heterogeneity. As a result, further examination of spatial autocorrelation in both the variables and residuals is necessary, and a spatial regression model may be required. 
 
 
 ```{r, fig.height=7, fig.width=9, warning=FALSE, message=FALSE}
