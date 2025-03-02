@@ -75,10 +75,15 @@ After these cleaning steps, the final dataset contained 1,720 observations.
 ## Exploratory Data Anaylsis
 
 ### Summary Statistics
+<<<<<<< HEAD
 We will first examine the summary statistics ( **mean** and **standard deviation (SD)**) of key variables in the dataset, including the dependent variables **MEDHVAL** (Median House Value), and predictors **NBELPOV100** (Households Living in Poverty), **PCTBACHMOR** (% of Individuals with Bachelor’s Degrees or Higher), **PCTVACANT**(% of Vacant Houses), **PCTSINGLES**( % of Single House Units). 
+=======
+We will first examine the summary statistics ( **mean** and **standard deviation (SD)**) of key variables in the dataset. These include the dependent variable *MEDHVAL* (Median House Value), and the predictors *NBELPOV100* (Households Living in Poverty), *PCTBACHMOR* (% of Individuals with Bachelor’s Degrees or Higher), *PCTVACANT*(% of Vacant Houses), and *PCTSINGLES*( % of Single House Units). 
+>>>>>>> 81b3d276b1568fc6c6c132001266526bfc962637
 
  
 The **mean** (\(\bar{X}\)) represents the average value of a variable and is calculated as:  
+The **mean** (\(\bar{X}\)) represents the average value of a variable and is calculated as follows:  
 
 $$
 \bar{X} = \frac{1}{n} \sum_{i=1}^{n} X_i
@@ -90,6 +95,7 @@ where:
 - \(n\) is the total number of observations  
 
 The mean gives us a single representative value of the dataset. To measure variability, we use the **standard deviation (SD)**, which quantifies how much the values in a dataset deviate from the mean. The formula for the sample standard deviation (\(s\)) is:  
+The mean provides a single representative value of the dataset. To measure the variability of the data, we use the **standard deviation (SD)**, which quantifies how much the values in a dataset deviate from the mean. The formula for the sample standard deviation (\(s\)) is:  
 
 $$
 s = \sqrt{\frac{1}{n-1} \sum_{i=1}^{n} \left( X_i - \bar{X} \right)^2}
@@ -103,24 +109,32 @@ where:
 
 A larger standard deviation indicates that the data points are more spread out, while a smaller standard deviation suggests that the data points are closer to the mean.  
 
+A larger standard deviation indicates that the data points are more spread out, while a smaller standard deviation suggests that the data points are more closely clustered around the mean.  
 
 ### Distributions 
 
 We will also examine the histograms and apply log transformations for key variables to assess whether the transformed variables follow a more normal-like distribution. 
+We will also examine the histograms and apply logarithmic transformations to key variables to assess whether the transformed variables exhibit a more normal-like distribution. 
 
 **Histograms** provide a visual representation of how a variable's values are distributed, helping to identify whether the data follows a **normal distribution**, is **right-skewed**, or **left-skewed**. Linear regression model assume that variables are approximately normally distributed.  
+**Histograms** provide a visual representation of how a variable's values are distributed, which helps identify whether the data follows a **normal distribution**, is **right-skewed**, or **left-skewed**. Note that linear regression models assume that variables are approximately normally distributed.
 
 - **X-axis:** The values of the variable (e.g., house prices, income levels). 
+- **X-axis:** Represents the values of the variable (e.g., house prices, income levels). 
 
 - **Y-axis:** The frequency of observations within each bin.  
+- **Y-axis:** Represents the frequency of observations within each bin.  
 
 If the histogram is **right-skewed**, it suggests that a small number of observations have significantly higher values compared to the rest. For variables following a **right-skewed distribution**, we will apply a **log transformation** to these variables to improve normality. Since the **log transformation** is undefined for zero or negative values, we must first check whether any variable contains zero.
+A **right-skewed** histogram suggests that a small number of observations have significantly higher values compared to the rest. For variables that exhibit **right-skewness**, a **log transformation** can improve normality. Since the **log transformation** is undefined for zero or negative values, we must first check whether any variable contains zero.
 
 - If **no zeros** presents, we apply the standard log transformation:  
+- If **no zeros** are present, we apply the standard log transformation:  
 $$
   X' = \log_{10} (X)
 $$  
 - If **zeros** present, we adjust by adding 1 before taking the log:  
+- If **zeros** are present, we add 1 to the variable before taking the log:  
 $$
   X' = \log_{10} (X + 1)
 $$  
@@ -128,19 +142,24 @@ $$
 
 By comparing the **original histograms** with the **log-transformed histograms**, we will assess whether the transformation improves the suitability of the data for predictive modeling.
 
+By comparing the **original histograms** with the **log-transformed histograms**, we will determine whether the transformation improves the suitability of the data for predictive modeling.
 
 ### Correlations
 
 We will analyze **correlations** between predictors, to detect potential **multicollinearity** before proceeding with regression analysis, which can distort model interpretations.  
+We will analyze the **correlations** between the predictors, to detect potential **multicollinearity** before proceeding with regression analysis, as it can distort model interpretations.  
 
 Multicollinearity occurs when predictors are highly correlated, which can lead to unstable regression coefficients. It also inflates standard errors, reducing the statistical significance of predictors, and increases the risk of overfitting, as redundant variables do not contribute new information to the model.  
+Multicollinearity occurs when predictors are highly correlated with one another, which can lead to unstable regression coefficients, inflated standard errors which reduce the statistical significance of predictors, and a higher risk of overfitting because redundant variables do not provide additional information to the model.  
 
 The **correlation coefficient** \(r\) is calculated as:  
+The **correlation coefficient** \(r\) quantifies the strength and direction of the linear relationship between two variables. It is calculated as:  
 
 $$
 r = \frac{\sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum_{i=1}^{n} (x_i - \bar{x})^2 \sum_{i=1}^{n} (y_i - \bar{y})^2}}
 $$
 In a more concise way, this above formula is also equivalent to the following: 
+In a more concise way, this formula can be expressed as: 
 
 $$
 r = \frac{1}{n-1} \sum_{i=1}^{n} \left( \frac{x_i - \bar{x}}{S_x} \right) \left( \frac{y_i - \bar{y}}{S_y} \right)
@@ -153,6 +172,7 @@ where:
 The correlation coefficient \(r\) ranges from **-1 to 1**: A value of +1 indicates a perfect positive linear relationship, while a value of -1 indicates a perfect negative linear relationship. A value of 0 suggests no linear relationship between the variables, meaning changes in one do not influence the other.
 
 ## Multiple Regression
+## Multiple Regression Analysis
 After getting a general sense of the data, we conduct multiple regression analysis to examine the relationship between the dependent variable, **Median House Value (MEDHVAL)**, and the predictors, **education attainment (PCTBACHMOR)**, **number of Households Living in Poverty (NBELPOV100)**, **percentage of Vacant Houses (PCTVACANT)**, and **percentage of Single House Units (PCTSINGLES)**. Regression analysis is a statistical method to examine the relationship between a dependent variable and one or more predictors. With this type of analysis, researchers can identify the strength and direction of the relationship between variables, make predictions, and assess the significance of predictors. The model also estimates coefficients for each predictor, which represent the expected change in the dependent variable for a one-unit change in the predictor, holding other predictors constant. For this study, the multiple regression model is formulated as follows:
 $$
 \text{LNMEDHVAL} = \beta_0 + \beta_1 \text{PCTVACANT} + \beta_2 \text{PCTSINGLES} + \beta_3 \text{PCTBACHMOR} + \beta_4 \text{log(NBELPOV100)} + \epsilon
