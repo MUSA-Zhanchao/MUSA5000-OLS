@@ -585,71 +585,23 @@ Moreover, the model has a multiple \(R^2\) value of 0.6623 and an adjusted \(R^2
 anova_table <- anova(fit)
 anova_table
 ```
-The Analysis of Variance (ANOVA) table shows additional insight into the significance of each predictor in explaining the variation in the dependent variable (`LNVMEDHVAL`). For proportion of vacant housing units (`PCTVACANT`), the sum of squares is 180.392, indicating that those amount of variation in `LNVMEDHVAL` that can be attributed to changes in `PCTVACANT`. 
+
+The Analysis of Variance (ANOVA) table shows additional insight into the significance of each predictor in explaining the variation in the dependent variable (`LNVMEDHVAL`). For proportion of vacant housing units (`PCTVACANT`), the sum of squares is 180.392, indicating that those amount of variation in `LNVMEDHVAL` that can be attributed to changes in `PCTVACANT`. A higher sum of squares indicates a mhigher relationship between the predictor and the dependent variable. The sum of squares for the percentage of residents with a bachelor's degree or higher (`PCTBACHMOR`) explains the highest portion of the variance in `LNVMEDHVAL`. In contrast, the sum of squares for the log-transformed number of households living below the poverty line (`LNNBELPOV100`) explains the least amount of variance in `LNVMEDHVAL`, with only 11.69. 
+
+The total sum of squares, which represents the total variance in the dependent variable (`LNVMEDHVAL`), is 230.34, with a mean square error of 0.134. Overall, the ANOVA table provides a comprehensive overview of the significance of each predictor in the model and the proportion of variance explained by each predictor. It confirms that all four predictors contribute significantly to explaining the variance in the dependent variable. These findings provide strong evidence of the robustness of the model and the relevance of neighbourhood characteristics in predicting housing values.
 
 
 ## Regression Assumptions Check
 
-```{r, include= FALSE}
-fitted_values <- fitted(fit)
-residuals_values <- residuals(fit)
-standardized_residuals <- rstandard(fit)
+In this section, we conducted variety of analysis to check if the assumption of the linear regression were met. In the earlier section, we already checked the variable distribution and multicollinearity. Here, we will check following assumption:
 
-data <- data %>%
-  mutate(
-    Fitted = fitted_values,
-    Residuals = residuals_values,
-    Standardized_Residuals = standardized_residuals)
-```
+- Linearity
+- Normality of Residuals
+- Homoscedasticity
 
+### Linearity
 
-
-```{r}
-ggplot(data, aes(x = Fitted, y = Standardized_Residuals)) +
-  geom_point(color = "black", size= 0.4) +    
-  geom_hline(yintercept = 0, linetype = "dashed", color = "red") +  
-  labs(
-    title = "Scatter Plot of Standardized Residuals vs Fitted Values",
-    x = "Predicted Values",
-    y = "Standardized Residuals"
-  ) +
-  theme_minimal() +   
-  theme(plot.subtitle = element_text(size = 9,face = "italic"),
-        plot.title = element_text(size = 12, face = "bold"), 
-        axis.text.x=element_text(size=6),
-        axis.text.y=element_text(size=6), 
-        axis.title=element_text(size=8))
-```
-
-```{r}
-ggplot(data, aes(x = Standardized_Residuals)) +
-  geom_histogram(bins = 30, fill = "black") +
-  labs(title = "Histogram of Standardized Residuals", 
-       x = "Standardized Residuals", 
-       y = "Frequency") +
-  theme_minimal() +   
-  theme(plot.subtitle = element_text(size = 9,face = "italic"),
-        plot.title = element_text(size = 12, face = "bold"), 
-        axis.text.x=element_text(size=6),
-        axis.text.y=element_text(size=6), 
-        axis.title=element_text(size=8))
-```
-
-
-
-### Linear Relationship Plot
-
-
-To further examine the linear relationship between the dependent variable and the predictors, we create four scatter plots, where the x-axis represents each predictor and the y-axis represents the dependent variable, *Log Transformed Median House Value*.  
-
-From the plots, we observe the following trends:  
-
-- **Logged Households Living in Poverty** shows a clear negative linear relationship with the dependent variable. As the percentage of households living in poverty increases, the *Log Transformed Median House Value* decreases. This is reflected in its correlation coefficient \\(< 0\\).  
-- **% with Bachelor’s Degrees or Higher** exhibits a strong positive linear relationship with the dependent variable. When the percentage of individuals with a bachelor's degree or higher increases, the *Log Transformed Median House Value* also rises, with a correlation coefficient \\(> 0\\).  
-- **% of Single House Units** has a weaker but still positive relationship with the dependent variable. While the trend is not obvious, areas with a higher percentage of single-house units tend to have higher *Log Transformed Median House Values*, especially when the percentage is sufficiently large. The correlation coefficient is \\(> 0\\).  
-- **% of Vacant Houses** has a clear negative linear relationship with the dependent variable. As the percentage of vacant houses increases, the *Log Transformed Median House Value* decreases, with a correlation coefficient \\(< 0\\).  
-
-These findings suggest that poverty and vacancy rates are negatively associated with housing values, while higher education levels and a greater share of single-house units generally correspond to higher media house values.
+To further examine the linear relationship between the dependent variable and the predictors, we create four scatter plots, where the x-axis represents each predictor and the y-axis represents the dependent variable, *Log Transformed Median House Value*. 
 
 ```{r fig.height=7, fig.width=9, warning=FALSE, message=FALSE}
 longer<-data %>%
@@ -677,6 +629,65 @@ ggplot(longer,aes(x = Value, y = LNMEDHVAL)) +
        y = "Log of Median House Value")
 ```
 
+From the plots, we observe the following trends:  
+
+- **Logged Households Living in Poverty** shows a negative linear relationship with the dependent variable. As the percentage of households living in poverty increases, the *Log Transformed Median House Value* decreases. This is reflected in its correlation coefficient \\(< 0\\). However, the association is not strictly linear. In the graph, the points are more scattered widely, particular at lower level of poverty, where housing values vary significantly. This indicate while poverty levels have a negative impact on housing values, the effect is not uniform across all block groups. There is a substantial variation in housing values even at similar poverty levels, which suggests that other factors may also be influencing housing values.
+
+- **% with Bachelor’s Degrees or Higher** exhibits a positive linear relationship with the dependent variable. When the percentage of individuals with a bachelor's degree or higher increases, the *Log Transformed Median House Value* also rises, with a correlation coefficient \\(> 0\\).  The points on the graph form a tight band along the trend line, indicating that higher education levels within a neighborhood is highly correlated with higher housing values. The consistent upward trend suggest that educational attainment is a key driver of housing prices, and a clear linear trend implies that this variable is suitable for this linear regression analysis.
+
+- **% of Single House Units** has a weaker but still positive relationship with the dependent variable. While the trend is not obvious, areas with a higher percentage of single-house units tend to have higher *Log Transformed Median House Values*, especially when the percentage is sufficiently large. The correlation coefficient is \\(> 0\\). The scatter points shows significant variability in housing values at various levels of single-house units, with some block groups having high housing values despite a low percentage of single-house units. This variability suggests that while there is a positive relationship between single-house units and housing values, other factors may also be influencing housing values at the same time. 
+
+- **% of Vacant Houses** has a general negative linear relationship with the dependent variable. As the percentage of vacant houses increases, the *Log Transformed Median House Value* decreases, with a correlation coefficient \\(< 0\\). However, in the graph, it reveals a more complex relationship with significant variation in housing values across different vacancy rates. There are clusters of block groups with high housing values and low vacancy rates, indicating that the relationship is not strictly linear.In the middle and lower ranges of vacancy rates, the decline in housing values becomes less pronounced. This suggests that while vacant housing is associated with lower property values, the impact diminishes or becomes less predictable as the vacancy rate changes.  
+
+In summary, the scatterplot shows that while the PCTBACHMOR and LNMEDHVAL have a clear linear relationship, the other predictors have more complex non-linear relationships with the dependent variable. This suggests that the linear regression model may not fully capture the complexity of the relationships between the predictors and median house values.
+
+
+### Normality of Residuals
+
+Next, we examine the normality of residuals of the regression model. The histogram of standardized residuals provides a detail view of the  of the distribution of the residuals from the OLS model, showing below:
+
+```{r, include= FALSE}
+fitted_values <- fitted(fit)
+residuals_values <- residuals(fit)
+standardized_residuals <- rstandard(fit)
+
+data <- data %>%
+  mutate(
+    Fitted = fitted_values,
+    Residuals = residuals_values,
+    Standardized_Residuals = standardized_residuals)
+```
+
+```{r}
+ggplot(data, aes(x = Standardized_Residuals)) +
+  geom_histogram(bins = 30, fill = "black") +
+  labs(title = "Histogram of Standardized Residuals", 
+       x = "Standardized Residuals", 
+       y = "Frequency") +
+  theme_minimal() +   
+  theme(plot.subtitle = element_text(size = 9,face = "italic"),
+        plot.title = element_text(size = 12, face = "bold"), 
+        axis.text.x=element_text(size=6),
+        axis.text.y=element_text(size=6), 
+        axis.title=element_text(size=8))
+```
+
+```{r}
+ggplot(data, aes(x = Fitted, y = Standardized_Residuals)) +
+  geom_point(color = "black", size= 0.4) +    
+  geom_hline(yintercept = 0, linetype = "dashed", color = "red") +  
+  labs(
+    title = "Scatter Plot of Standardized Residuals vs Fitted Values",
+    x = "Predicted Values",
+    y = "Standardized Residuals"
+  ) +
+  theme_minimal() +   
+  theme(plot.subtitle = element_text(size = 9,face = "italic"),
+        plot.title = element_text(size = 12, face = "bold"), 
+        axis.text.x=element_text(size=6),
+        axis.text.y=element_text(size=6), 
+        axis.title=element_text(size=8))
+```
 
 
 ```{r, fig.height=7, fig.width=9, warning=FALSE, message=FALSE}
@@ -740,27 +751,21 @@ Our regression analysis of Philadelphia’s census block group data clearly show
 
 **Interpreting the Results:**
 
-The analysis finds that a higher percentage of vacant houses (PCTVACANT) is strongly associated with lower housing values. For every one-percentage point increase in the percentage of vacant houses (PCTVACANT), there is an approximate 1.915% decrease in the log-transformed median house value (LNMEDHVAL), assuming all other factors remain constant. This suggests that concentrated vacancies could signal neighborhood disinvestment, which may discourage future investment and reduce housing stability.
-
-In contrast, neighborhoods with a higher percentage of single-family homes (PCTSINGLES) and a higher percentage of residents with at least a bachelor’s degree (PCTBACHMOR) tend to see higher housing values. Although the positive effect of the percentage of single-family homes (PCTSINGLES) is statistically significant, it is relatively modest. The effect of educational attainment is more pronounced—a one-percentage point increase in the percentage of residents with at least a bachelor’s degree (PCTBACHMOR) is associated with about a 2.09% increase in the log-transformed median house value (LNMEDHVAL). This reflects the broader link between education levels and economic opportunity, which in turn can drive housing demand.
-
-Additionally, the model shows that the log-transformed number of households living below the poverty line (LNNBELPOV100) is negatively associated with median housing values, though the effect size is smaller (about a 0.078% decrease per percentage point increase). This suggests that economic hardship remains a key determinant of neighborhood housing conditions, reinforcing the importance of policies that address long-term affordability and economic mobility.
+**Need to rewrite** We cannot include log-transformed value directly into the report, see the above interpret section for the interpretation of the results.
 
 **Checking the Model Assumptions:**
 
-To ensure our model’s reliability, we conducted several diagnostic tests. Scatter plots of standardized residuals versus predicted values indicate that most residuals are randomly distributed around zero, though a few outliers exist. The histogram of standardized residuals approximates a normal distribution, which suggests that our assumption of normally distributed errors is reasonably satisfied.
+**b)	Talk about the quality of the model – that is, state if this is a good model overall (e.g., R2, F-ratio test), and what other predictors that we didn’t include in our model might be associated with our dependent variable.**
+i.	Looking at the stepwise regression results, did the final model include all 4 predictors or were some dropped? What does that tell you about the quality of the model? 
+ii.	Looking at the cross-validation results, was the RMSE better for the 4 predictor model or the 2 predictor model?  
 
-The choropleth maps provide further spatial insight into these relationships. Higher housing values are concentrated in areas such as central Philadelphia and Germantown/Chestnut Hill, where educational attainment is also higher. Conversely, North Philadelphia, which experiences higher poverty and vacancy rates, has lower housing values. While the correlation analysis suggests that multicollinearity is not a major concern, the spatial clustering of housing values raises potential issues of spatial autocorrelation, meaning that neighboring block groups might influence each other more than expected. Future analyses could incorporate spatial econometric techniques, such as Moran’s I, to assess these effects in more detail.
 
-**Extra Analyses and Model Robustness:**
 
 To validate our model, we performed stepwise regression using the Akaike Information Criterion (AIC) and conducted 5-fold cross-validation. The stepwise regression confirmed that the selected predictors contribute to a strong model fit, while the cross-validation results showed that the full model which includes all the four predictors performs better than a reduced model that only includes the percentage of vacant houses (PCTVACANT) and median household income. These results strengthen our confidence in the predictive power and robustness of the model.
 
-**Ridge or LASSO regression:**
 
-Ridge and LASSO regression are used when there are highly correlated predictors or when only a subset of features is expected to be truly important. In such cases, some predictor coefficients may become excessively large, leading to overfitting in a linear model. These methods manage overfitting by adding a penalty term to the loss function, which constrains the coefficients. However, in our model, the highest correlation between predictors is 0.32, indicating no significant multicollinearity. Additionally, no predictor exhibits excessively large coefficients. Therefore, applying Ridge or LASSO regression in this case would be unnecessary.
 
-**Policy Implications: A Focus on Inclusive Growth and Stability:**
+**Policy Implications: A Focus on Inclusive Growth and Stability: (one paragraph only)**
 
 The findings have important implications for urban policy, particularly in ensuring that strategies to improve housing markets do not lead to displacement or increased housing burdens for vulnerable communities. The strong negative impact of vacancy rates (PCTVACANT) on housing values suggests that reducing long-term vacancies could play a role in neighborhood stabilization. However, rather than policies that solely focus on increasing property values, interventions should prioritize equitable investment like rehabilitating vacant properties for affordable housing, expanding community land trusts, and offering support for longtime residents at risk of displacement.
 
@@ -772,10 +777,8 @@ The negative association between poverty levels (LNNBELPOV100) and housing value
 
 Although our model provides a strong understanding of housing market dynamics, there are several limitations that future research should address. First, while our model explains a significant portion of the variation in housing values, about one-third remains unexplained. This suggests that other factors like access to transportation, historical redlining patterns, or the presence of public amenities may play important roles and should be explored in future studies.
 
-Additionally, although applying log transformations helped normalize the data, these adjustments might not fully account for the large number of zeros in some predictors. Future research could investigate alternative methods that are better suited to handle such zero-heavy distributions.
+The potential presence of spatial autocorrelation suggests that neighboring block groups may not be entirely independent, which could bias some estimates. Incorporating spatial econometric techniques, such as spatial lag models or geographically weighted regression, could improve the accuracy of future analyses.
 
-Lastly, the potential presence of spatial autocorrelation suggests that neighboring block groups may not be entirely independent, which could bias some estimates. Incorporating spatial econometric techniques, such as spatial lag models or geographically weighted regression, could improve the accuracy of future analyses.
+### Possibility of Ridge or LASSO Regression
 
-**Conclusion: Balancing Market Forces with Community Stability**
-
-Our study offers a detailed, data-driven analysis of the factors influencing housing values in Philadelphia. While the findings confirm that vacancy rates, educational attainment, and poverty levels all shape property values, the goal of urban policy should not simply be to increase housing values but to do so in a way that promotes stability, affordability, and long-term community resilience. By integrating targeted vacancy reduction efforts, expanding access to education, and implementing strong affordability measures, cities can create more equitable and inclusive housing markets that benefit all residents.
+Ridge and LASSO regression are used when there are highly correlated predictors or when only a subset of features is expected to be truly important. In such cases, some predictor coefficients may become excessively large, leading to overfitting in a linear model. These methods manage overfitting by adding a penalty term to the loss function, which constrains the coefficients. However, in our model, the highest correlation between predictors is 0.32, indicating no significant multicollinearity. Additionally, no predictor exhibits excessively large coefficients. Therefore, applying Ridge or LASSO regression in this case would be unnecessary.
