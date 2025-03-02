@@ -105,13 +105,13 @@ A larger standard deviation indicates that the data points are more spread out, 
 
 ### Distributions 
 
-We will also examine the histograms and apply log transformations for key variables to assess whether the transformed variables follow a more normal-like distribution. 
+We will also examine the histograms and apply logarithmic transformations to key variables to assess whether the transformed variables exhibit a more normal-like distribution. 
 
-**Histograms** provide a visual representation of how a variable's values are distributed, helping to identify whether the data follows a **normal distribution**, is **right-skewed**, or **left-skewed**. Linear regression model assume that variables are approximately normally distributed.  
+**Histograms** provide a visual representation of how a variable's values are distributed, which helps identify whether the data follows a **normal distribution**, is **right-skewed**, or **left-skewed**. Note that linear regression models assume that variables are approximately normally distributed.
 
-- **X-axis:** The values of the variable (e.g., house prices, income levels). 
+- **X-axis:** Represents the values of the variable (e.g., house prices, income levels). 
 
-- **Y-axis:** The frequency of observations within each bin.  
+- **Y-axis:** Represents the frequency of observations within each bin.  
 
 If the histogram is **right-skewed**, it suggests that a small number of observations have significantly higher values compared to the rest. For variables following a **right-skewed distribution**, we will apply a **log transformation** to these variables to improve normality. Since the **log transformation** is undefined for zero or negative values, we must first check whether any variable contains zero.
 
@@ -126,7 +126,6 @@ $$
   This ensures that all values remain positive and avoids undefined values.  
 
 By comparing the **original histograms** with the **log-transformed histograms**, we will assess whether the transformation improves the suitability of the data for predictive modeling.
-
 
 ### Correlations
 
