@@ -64,9 +64,9 @@ To predict median house values in Philadelphia, we obtained the original dataset
 
 For modeling purposes, we refined the dataset using the following criteria:
 
-(1) Retained block groups with a population greater than 40
-(2) Included only block groups that contained housing units
-(3) Excluded records where the median house value was below $10,000
+(1)  Retained block groups with a population greater than 40
+(2)  Included only block groups that contained housing units
+(3)  Excluded records where the median house value was below $10,000
 
 In additon, we removed one specific block group in North Philadelphia that exhibited inconsistencies, as it had an unusually high median house value (over $800,000) despite a very low median household income (less than $8,000).
 
@@ -76,7 +76,7 @@ After these cleaning steps, the final dataset contained 1,720 observations.
 
 ### Summary Statistics
 
-We will first examine the summary statistics ( **mean** and **standard deviation (SD)**) of key variables in the dataset. These include the dependent variable **MEDHVAL** (Median House Value), and the predictors **NBELPOV100** (Households Living in Poverty), **PCTBACHMOR** (% of Individuals with Bachelor’s Degrees or Higher), **PCTVACANT**(% of Vacant Houses), and **PCTSINGLES**( % of Single House Units). 
+We will first examine the summary statistics  **mean** and **standard deviation (SD)** of key variables in the dataset. These include the dependent variable `MEDHVAL` (**Median House Value**), and the predictors `NBELPOV100` (**Households Living in Poverty**), `PCTBACHMOR` (**% of Individuals with Bachelor’s Degrees or Higher**), `PCTVACANT`(**% of Vacant Houses**), and `PCTSINGLES`(**% of Single House Units**). 
  
 The **mean** (\(\bar{X}\)) represents the average value of a variable and is calculated as follows:  
 
@@ -152,12 +152,9 @@ where:
 The correlation coefficient \(r\) ranges from **-1 to 1**: A value of +1 indicates a perfect positive linear relationship, while a value of -1 indicates a perfect negative linear relationship. A value of 0 suggests no linear relationship between the variables, meaning changes in one do not influence the other.
 
 ## Multiple Regression Analysis
-<<<<<<< HEAD
-After getting a general sense of the data, we conduct multiple regression analysis to examine the relationship between the dependent variable, **Median House Value** (`MEDHVAL`), and the predictors, **education attainment** (`PCTBACHMOR`), **number of Households Living in Poverty** (`NBELPOV100`), **percentage of Vacant Houses** (`PCTVACANT`), and **percentage of Single-family House Units **(`PCTSINGLES`). Regression analysis is a statistical method to examine the relationship between a dependent variable and one or more predictors. With this type of analysis, researchers can identify the strength and direction of the relationship between variables, make predictions, and assess the significance of predictors. The model also estimates coefficients for each predictor, which represent the expected change in the dependent variable for a one-unit change in the predictor, holding other predictors constant. For this study, the multiple regression model is formulated as follows:
-=======
 
-After obtaining a general understanding of the data, we conduct multiple regression analysis to examine the relationship between the dependent variable, **Median House Value (MEDHVAL)**, and the predictors: **education attainment (PCTBACHMOR)**, **number of Households Living in Poverty (NBELPOV100)**, **percentage of Vacant Houses (PCTVACANT)**, and **percentage of Single House Units (PCTSINGLES)**. Regression analysis is a statistical method used to examine the relationship between a dependent variable and one or more predictors, allowing researchers to determine both the strength and direction of these relationships, make predictions, and assess the statistical significance of each predictor. The model also estimates coefficients for each predictor, which represent the expected change in the dependent variable for a one-unit change in the predictor, holding other predictors constant. For this study, the multiple regression model is formulated as follows:
->>>>>>> 6ab4852bf8125a654a8bb65a99629f1a1b335707
+After getting a general sense of the data, we conduct multiple regression analysis to examine the relationship between the dependent variable, **Median House Value** (`MEDHVAL`), and the predictors, **education attainment** (`PCTBACHMOR`), **number of Households Living in Poverty** (`NBELPOV100`), **percentage of Vacant Houses** (`PCTVACANT`), and **percentage of Single-family House Units **(`PCTSINGLES`). Regression analysis is a statistical method to examine the relationship between a dependent variable and one or more predictors. With this type of analysis, researchers can identify the strength and direction of the relationship between variables, make predictions, and assess the significance of predictors. The model also estimates coefficients for each predictor, which represent the expected change in the dependent variable for a one-unit change in the predictor, holding other predictors constant. For this study, the multiple regression model is formulated as follows:
+
 $$
 \text{LNMEDHVAL} = \beta_0 + \beta_1 \text{PCTVACANT} + \beta_2 \text{PCTSINGLES} + \beta_3 \text{PCTBACHMOR} + \beta_4 \text{log(NBELPOV100)} + \epsilon
 $$
@@ -167,11 +164,7 @@ where **LNMEDHVAL** is the log-transformed median house value, **PCTVACANT** is 
 
 ### Regression Assumptions
 
-<<<<<<< HEAD
-For the results of the regression analysis to be valid, several key assumptions must be met.  These assumptions including **linearity**, **independence of observations**, **homoscedasticity**, **normality of residuals**, **no multicollinearity**, and **no fewer than 10 observations per predictors**.
-=======
 For the results of the regression analysis to be valid, several key assumptions must be met. These assumptions include **linearity**, **independence of observations**, **homoscedasticity**, **normality of residuals**, **no multicollinearity**, and **no fewer than 10 observations per predictors**.
->>>>>>> 6ab4852bf8125a654a8bb65a99629f1a1b335707
 
 - **Linearity** assumes that the relationship between the dependent variable and the predictors is linear. To verify this assumption, we made scatter plots of the dependent variable against each predictor. If the relationship appears to be linear, the assumptions was met.
 
@@ -187,15 +180,9 @@ For the results of the regression analysis to be valid, several key assumptions 
 
 ### Parameter Estimations
 
-<<<<<<< HEAD
-After verifing the assumptions of the regression, we start the regression analysis. Wh estimate the following parameters: 
-- \( \beta_0 \), which is the intercept
-- \( \beta_1, \dots, \beta_k \), which are the coefficients of each independent variables
-=======
 After verifing the assumptions of the regression, we start the regression analysis. We estimate the following parameters: 
 - \( \beta_0 \), which is the intercept
 - \( \beta_1, \dots, \beta_k \), which are the coefficients of each independent variable
->>>>>>> 6ab4852bf8125a654a8bb65a99629f1a1b335707
 - \( \sigma^2 \), the variance of the error terms, which quantifies the variability in the dependent variable that is not explained by the predictors.
 
 The least squares method estimates the coefficients by minimizing **the sum of squared errors (SSE)**, which is the sum of the squared differences between the observed values and the predicted values. The formula for SSE is:
@@ -708,7 +695,8 @@ ggplot(data, aes(x = Fitted, y = Standardized_Residuals)) +
         axis.text.y=element_text(size=6), 
         axis.title=element_text(size=8))
 ```
-The scatterplot show **no clear pattern in the residuals**, as the predicted values rising or falling. Instead, they seem to be pretty randomly distributed around the 0 line, indicating that the residuals have constant variance across all levels of the fitted values.There is no obvious funnel shape or systematic variation trend suggests that the assumption of homoscedasticity is satisfied. In addition, the residuals are generally symmetrical distributed around the 0 line,which indicate the model does not systemically over- or under-predicted the dependent variable over the range of fitted values.
+
+The scatterplot shows **no clear pattern in the residuals**, as the predicted values rising or falling. Instead, they seem to be pretty randomly distributed around the 0 line, indicating that the residuals have constant variance across all levels of the fitted values.There is no obvious funnel shape or systematic variation trend suggests that the assumption of homoscedasticity is satisfied. In addition, the residuals are generally symmetrical distributed around the 0 line,which indicate the model does not systemically over- or under-predicted the dependent variable over the range of fitted values.
 
 However, the plot does show some potential outliers, particularly those points are outside -3 and 3 standardized residuals. These extreme residuals are located upper or lower of the main residual clusters and may indicate that the model's predicted values deviate significantly from the actual values. Although the number of residuals is relative small, their presence indicates that the model may not fit all data well.
 
