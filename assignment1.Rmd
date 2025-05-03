@@ -14,8 +14,8 @@ output:
 ---
 Keywords: Ordinary Least Square Regression, K-fold Cross Validation, Stepwise Regression
 
-GitHub Repository: [MUSA5000-OLS](https://github.com/zyang91/MUSA5000-OLS) \|
-[Website](https://zyang91.github.io/MUSA5000-OLS/)
+GitHub Repository: [MUSA5000-OLS](https://github.com/MUSA-Zhanchao/MUSA5000-OLS) \|
+[Website](https://musa-zhanchao.github.io/MUSA5000-OLS/)
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
